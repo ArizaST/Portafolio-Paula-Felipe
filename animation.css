@@ -1,0 +1,636 @@
+/* ================================
+   ANIMATION.CSS - TODAS LAS ANIMACIONES
+   ================================ */
+
+/* ================================
+   KEYFRAMES PRINCIPALES
+   ================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes letterReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) rotateX(-45deg);
+    }
+    70% {
+        opacity: 1;
+        transform: translateY(-10px) rotateX(0deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0deg);
+    }
+}
+
+@keyframes letter3DReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) rotateX(-45deg) rotateY(-20deg) scale(0.8);
+    }
+    70% {
+        opacity: 1;
+        transform: translateY(-10px) rotateX(0deg) rotateY(0deg) scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0deg) rotateY(0deg) scale(1);
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1); 
+    }
+    50% { 
+        transform: scale(1.05); 
+    }
+}
+
+@keyframes pulse-whatsapp {
+    0% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 0 rgba(37, 211, 102, 0.7);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 10px rgba(37, 211, 102, 0);
+    }
+    100% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4), 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+@keyframes goldShine {
+    0%, 90%, 100% { 
+        opacity: 0; 
+        left: -100%; 
+    }
+    5%, 15% { 
+        opacity: 1; 
+        left: 100%; 
+    }
+}
+
+@keyframes goldShimmer {
+    0%, 90%, 100% { 
+        opacity: 0; 
+        left: -20%; 
+    }
+    5%, 15% { 
+        opacity: 1; 
+        left: 120%; 
+    }
+}
+
+@keyframes shine {
+    0%, 100% { 
+        opacity: 0; 
+    }
+    50% { 
+        opacity: 1; 
+    }
+}
+
+@keyframes kenBurns {
+    0% { 
+        transform: scale(1.1) translate(0, 0); 
+    }
+    100% { 
+        transform: scale(1.2) translate(-2%, -1%); 
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutToLeft {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes logoFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes starTwinkle {
+    0%, 100% { 
+        opacity: 0.8; 
+        transform: scale(1); 
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.1); 
+    }
+}
+
+/* ================================
+   ANIMACIONES DEL PORTFOLIO TEXT
+   ================================ */
+
+.portfolio-letter {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Delays secuenciales para Portfolio */
+.letter-p { animation-delay: 0.1s; }
+.letter-o-shared { animation-delay: 0.2s; }
+.letter-rt { animation-delay: 0.3s; }
+.letter-f { animation-delay: 0.4s; }
+.letter-li { animation-delay: 0.5s; }
+.letter-o-gold { animation-delay: 0.6s; }
+
+/* Animaciones alternativas para portfolio */
+.portfolio-title .letter {
+    opacity: 0;
+    transform: translateY(100px) rotateX(-90deg);
+    animation: letterReveal 0.8s ease forwards;
+}
+
+.portfolio-title .letter:nth-child(1) { animation-delay: 0.1s; }
+.portfolio-title .letter:nth-child(2) { animation-delay: 0.2s; }
+.portfolio-title .letter:nth-child(3) { animation-delay: 0.3s; }
+.portfolio-title .letter:nth-child(4) { animation-delay: 0.4s; }
+.portfolio-title .letter:nth-child(5) { animation-delay: 0.5s; }
+.portfolio-title .letter:nth-child(6) { animation-delay: 0.6s; }
+.portfolio-title .letter:nth-child(7) { animation-delay: 0.7s; }
+.portfolio-title .letter:nth-child(8) { animation-delay: 0.8s; }
+.portfolio-title .letter:nth-child(9) { animation-delay: 0.9s; }
+
+/* ================================
+   ANIMACIONES DEL HERO
+   ================================ */
+
+.hero-content h1,
+.hero-content .portfolio-container {
+    animation: fadeInUp 1s ease-out 0.5s both;
+}
+
+.hero-subtitle {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s ease-out 1.2s both;
+}
+
+.cta-button {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s ease-out 1.4s both;
+}
+
+.hero-indicators {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1s ease-out 1.6s both;
+}
+
+.scroll-indicator {
+    opacity: 0;
+    animation: fadeInUp 1s ease-out 2s both;
+}
+
+.scroll-arrow {
+    animation: bounce 2s infinite;
+}
+
+/* Animación de background */
+.hero-background {
+    animation: kenBurns 20s ease-in-out infinite alternate;
+}
+
+/* ================================
+   ANIMACIONES DE NAVEGACIÓN MÓVIL
+   ================================ */
+
+.nav-links.active {
+    animation: slideInFromLeft 0.3s ease forwards;
+}
+
+.nav-links.closing {
+    animation: slideOutToLeft 0.3s ease forwards;
+}
+
+/* Animación del botón hamburguesa */
+.mobile-nav-toggle.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-toggle.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-toggle.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+    transition: all 0.3s ease;
+}
+
+/* ================================
+   ANIMACIONES DE PORTFOLIOS
+   ================================ */
+
+.portfolio-item {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.3s ease;
+}
+
+.portfolio-item.hidden {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+}
+
+.portfolio-card {
+    transition: all 0.3s ease;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-10px);
+}
+
+/* Animación de contadores */
+.stat-number,
+.metric-value,
+.indicator-number {
+    transition: all 0.3s ease;
+}
+
+/* ================================
+   ANIMACIONES DE CARRUSEL DE CLIENTES
+   ================================ */
+
+.client-logo {
+    animation: logoFadeIn 0.6s ease forwards;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.client-logo:nth-child(1) { animation-delay: 0.1s; }
+.client-logo:nth-child(2) { animation-delay: 0.2s; }
+.client-logo:nth-child(3) { animation-delay: 0.3s; }
+.client-logo:nth-child(4) { animation-delay: 0.4s; }
+.client-logo:nth-child(5) { animation-delay: 0.5s; }
+.client-logo:nth-child(6) { animation-delay: 0.6s; }
+
+.client-logo:hover {
+    transform: scale(1.1) translateY(-15px);
+}
+
+/* ================================
+   ANIMACIONES DE SERVICIOS
+   ================================ */
+
+.service-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+}
+
+.service-background {
+    transition: transform 0.5s ease;
+}
+
+.service-card:hover .service-background {
+    transform: scale(1.05);
+}
+
+.service-overlay {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.service-card:hover .service-overlay {
+    opacity: 1;
+}
+
+.service-description {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(30px);
+    transition: all 0.4s ease 0.1s;
+}
+
+.service-card:hover .service-description {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0);
+}
+
+/* ================================
+   ANIMACIONES DE PAQUETES
+   ================================ */
+
+.package-card {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.package-card:hover {
+    transform: translateY(-10px);
+}
+
+.package-card.featured:hover {
+    transform: translateY(-10px) scale(1.02);
+}
+
+/* ================================
+   ANIMACIONES DE SERVICIOS ADICIONALES
+   ================================ */
+
+.additional-service-card {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.additional-service-card::before {
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.additional-service-card:hover::before {
+    transform: scaleX(1);
+}
+
+.additional-service-card:hover {
+    transform: translateY(-15px) scale(1.02);
+}
+
+.service-icon span {
+    transition: transform 0.3s ease;
+}
+
+.additional-service-card:hover .service-icon span {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.additional-service-card.premium .service-icon::after {
+    animation: starTwinkle 4s ease-in-out infinite;
+}
+
+.service-overlay {
+    transform: translateY(100%);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0;
+}
+
+.additional-service-card:hover .service-overlay {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* ================================
+   ANIMACIONES DE DESARROLLO WEB
+   ================================ */
+
+.web-option-card {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.web-option-card:hover {
+    transform: translateY(-15px);
+}
+
+.web-option-card.popular:hover {
+    transform: translateY(-15px) scale(1.05);
+}
+
+.process-step {
+    transition: all 0.3s ease;
+}
+
+.process-step:hover {
+    transform: translateY(-5px);
+}
+
+/* ================================
+   ANIMACIONES DE WHATSAPP
+   ================================ */
+
+.whatsapp-float {
+    animation: pulse-whatsapp 2s infinite;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    animation: none;
+}
+
+.whatsapp-btn {
+    transition: all 0.3s ease;
+}
+
+.whatsapp-btn::before {
+    transform: scale(0);
+    transition: transform 0.3s ease;
+}
+
+.whatsapp-btn:hover::before {
+    transform: scale(1);
+}
+
+.whatsapp-btn:hover {
+    transform: translateY(-2px);
+}
+
+.whatsapp-icon {
+    transition: transform 0.3s ease;
+}
+
+.whatsapp-btn:hover .whatsapp-icon {
+    transform: scale(1.1);
+}
+
+.whatsapp-tooltip {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-float:hover .whatsapp-tooltip {
+    opacity: 1;
+    visibility: visible;
+    right: 75px;
+}
+
+.whatsapp-chat-preview {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.whatsapp-chat-preview.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.chat-close {
+    transition: background 0.3s ease;
+}
+
+.chat-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.chat-input {
+    transition: border-color 0.3s ease;
+}
+
+.chat-input:focus {
+    border-color: #25d366;
+}
+
+.chat-send {
+    transition: all 0.3s ease;
+}
+
+.chat-send:hover {
+    background: #128c7e;
+    transform: scale(1.05);
+}
+
+/* ================================
+   ANIMACIONES DE EFECTOS DORADOS
+   ================================ */
+
+.portfolio-letter.gold::after {
+    animation: goldShine 4s ease-in-out infinite;
+}
+
+.gold-shine-overlay {
+    animation: goldShimmer 5s ease-in-out infinite;
+}
+
+.shine-overlay {
+    animation: shine 3s ease-in-out infinite;
+}
+
+/* ================================
+   ANIMACIONES ON SCROLL
+   ================================ */
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.animate-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+/* ================================
+   CONTROLES DE ANIMACIÓN
+   ================================ */
+
+.effects-paused * {
+    animation-play-state: paused !important;
+}
+
+.hero-active .portfolio-letter {
+    will-change: transform, opacity;
+}
+
+/* ================================
+   PERFORMANCE OPTIMIZATIONS
+   ================================ */
+
+.portfolio-letter,
+.service-card,
+.package-card,
+.client-logo,
+.whatsapp-btn {
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+}
+
+/* ================================
+   REDUCED MOTION SUPPORT
+   ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .clients-carousel {
+        animation: none !important;
+    }
+    
+    .client-logo {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    .package-card {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    
+    .portfolio-letter {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
