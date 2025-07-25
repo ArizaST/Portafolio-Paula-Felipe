@@ -13,9 +13,10 @@
 }
 
 html, body {
-    overflow-x: hidden;
-    width: 100%;
-    max-width: 100vw;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+            scroll-behavior: auto !important; /* Eliminar smooth scroll inicial */
 }
 
 body {
@@ -32,7 +33,11 @@ body {
             --letter-spacing-wide: 0.05em;
             --letter-spacing-wider: 0.1em;
         }
-
+.page-loading .hero {
+    position: fixed;
+    top: 0;
+    z-index: 999999;
+}
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -232,6 +237,48 @@ nav {
             backface-visibility: hidden;
             perspective: 1000px;
         }
+
+        .hero-fallback {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #002366 0%, #262840 50%, #1a1a2e 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    z-index: 1;
+    display: none;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@media (max-width: 768px) {
+    /* Video móvil optimizado */
+    .hero-video {
+        width: 100vw !important;
+        height: 100vh !important;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    /* Fallback por defecto en móvil */
+    .hero-fallback {
+        display: block !important;
+        animation: gradientShiftMobile 10s ease infinite;
+    }
+
+    /* Solo mostrar video si funciona */
+    .video-working .hero-fallback {
+        display: none !important;
+    }
+}
+
+.video-failed .hero-video { display: none; }
+.video-failed .hero-fallback { display: block; }
 
         /* Overlay oscuro sobre el video */
         .hero-overlay {
@@ -3706,40 +3753,6 @@ footer {
     
     .nav-links {
         transition: none !important;
-    }
-}
-
-/* ================================
-   TEMA OSCURO (OPCIONAL)
-   ================================ */
-
-@media (prefers-color-scheme: dark) {
-    .additional-services-section {
-        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-    }
-    
-    .additional-service-card {
-        background: linear-gradient(145deg, #3a3a3a 0%, #2a2a2a 100%);
-        color: #e0e0e0;
-    }
-    
-    .service-content h4 {
-        color: #e0e0e0;
-    }
-    
-    .service-content p {
-        color: #b0b0b0;
-    }
-    
-    .client-logo {
-        background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
-        border-color: #404040;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    }
-    
-    .client-logo:hover {
-        background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
-        border-color: #667eea;
     }
 }
 

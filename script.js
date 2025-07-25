@@ -1,14 +1,36 @@
 // ================================
-// SCRIPT.JS COMPLETO - CM PRO PORTFOLIO
+// SCRIPT.JS COMPLETO - PORTFOLIO
 // Sistema completo conectado HTML + Sectores + Funcionalidades originales
 // ================================
 
-console.log('🚀 Inicializando CM Pro Portfolio Completo...');
+console.log('🚀 Inicializando Portfolio Completo...');
 
 // ================================
 // MAPEO DE PROYECTOS HTML A SECTORES
 // ================================
+// FIX SCROLL AUTOMÁTICO
+function forceScrollTop() {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+}
 
+// Ejecutar inmediatamente
+forceScrollTop();
+
+// Prevenir scroll durante carga
+let isPageLoaded = false;
+window.addEventListener('scroll', function() {
+    if (!isPageLoaded) {
+        forceScrollTop();
+    }
+});
+
+// Marcar como cargado después de 3 segundos
+setTimeout(() => {
+    isPageLoaded = true;
+    document.body.classList.remove('page-loading');
+}, 3000);
 const htmlProjectsMapping = {
     // Proyecto Veró (ya existente en HTML) - Filtro: Branding, Sector: Restaurantes
     'vero-project': {

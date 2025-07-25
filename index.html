@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="responsive.css">
     <link rel="stylesheet" href="animation.css">
 </head>
-<body>
+<body class="page-loading">
     <header>
     <nav>
         <div class="logo">Portafolio</div>
@@ -32,18 +32,24 @@
 </header>
 
 <section id="inicio" class="hero">
+    
+    <div class="hero-fallback"></div>
+    
     <!-- Video de fondo -->
     <video 
-        class="hero-video" 
-        autoplay 
-        muted 
-        loop 
-        playsinline
-        poster="/path/to/poster-image.jpg"
-        preload="metadata">
-        <source src="Videos/Banner.mp4" type="video/mp4">
-        Tu navegador no soporta videos HTML5.
-    </video>
+            class="hero-video" 
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            preload="metadata"
+            poster="Img/video-poster.jpg"
+            oncanplay="handleVideoLoad()"
+            onerror="handleVideoError()">
+            <source src="Videos/Banner.mp4" type="video/mp4">
+            <source src="Videos/Banner.webm" type="video/webm">
+            Tu navegador no soporta videos HTML5.
+        </video>
     
     <!-- Overlay oscuro sobre el video -->
     <div class="hero-overlay"></div>
@@ -485,7 +491,7 @@
                                         </div>
                                     </div>
                                     <div class="post-caption">
-                                        <p><strong>@elmolcajetecolombiat</strong></p>
+                                        <p><strong>@elmolcajetecolombia</strong></p>
                                     </div>
                                 </div>
                             </div>
@@ -752,7 +758,7 @@
                     <!-- Reel 1 - Fisio Activity -->
                     <div class="reel-portfolio-card">
                         <div class="portfolio-header">
-                            <h5>Dental Flap</h5>
+                            <h5>FisioActivity Sabana</h5>
                             <span class="project-category">Health Content</span>
                         </div>
 
@@ -810,7 +816,7 @@
                     <!-- Reel 3 - Fisio Activity -->
                     <div class="reel-portfolio-card">
                         <div class="portfolio-header">
-                            <h5>FisioActivity Sabana</h5>
+                            <h5>Dental Flap</h5>
                             <span class="project-category">Health Content</span>
                         </div>
 
@@ -1494,7 +1500,7 @@
                     <button class="web-option-btn" onclick="sendWhatsAppMessage('landing-page')">
                         Solicitar Landing Page
                     </button>
-                    <span class="delivery-time">Entrega: 5-7 días</span>
+                    <span class="delivery-time">Entrega: 7-11 días</span>
                 </div>
             </div>
 
