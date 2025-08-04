@@ -915,6 +915,92 @@ nav {
             color: #555;
             line-height: 1.8;
         }
+        /* Estilos adicionales para los filtros */
+        .portfolio-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 3rem 0;
+            padding: 0 1rem;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid var(--accent-light-blue);
+            color: var(--primary-navy);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .filter-btn:hover {
+            background: var(--primary-navy);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 35, 102, 0.3);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-navy);
+            color: white;
+            border-color: var(--primary-navy);
+            box-shadow: 0 8px 25px rgba(0, 35, 102, 0.3);
+        }
+
+        /* Animaciones de filtrado */
+        .portfolio-item {
+            transition: all 0.5s ease;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .portfolio-item.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+            height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        /* Contador de resultados */
+        .results-counter {
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .results-counter.show {
+            display: block;
+        }
+
+        .results-counter.hide {
+            display: none;
+        }
+
+        /* Mensaje cuando no hay resultados */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        .no-results.show {
+            display: block;
+        }
 
         /* ================================
            GRID DE PROYECTOS
