@@ -1,5 +1,5 @@
 // ================================
-// SCRIPT PRINCIPAL CON FILTROS INTEGRADOS
+// SCRIPT PRINCIPAL
 // ================================
 
 console.log('🚀 Inicializando Portfolio Completo...');
@@ -898,6 +898,265 @@ function initializeMobileNavigation() {
     console.log('✅ Navegación móvil inicializada correctamente');
 }
 
+// CARRUSEL DE CLIENTES COMPLETO
+function initializeClientsCarousel() {
+    const carousel = document.querySelector('.clients-carousel');
+    const container = document.querySelector('.clients-carousel-container');
+    
+    if (!carousel || !container) {
+        console.log('⚠️ Carrusel de clientes no encontrado');
+        return;
+    }
+
+    let isHovered = false;
+    let isDragging = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let animationId = null;
+    let currentTransform = 0;
+    let autoScrollSpeed = 1;
+    let isAutoScrollPaused = false;
+
+    function initializeCarousel() {
+        container.style.cssText += `
+            cursor: grab;
+            user-select: none;
+            overflow: hidden;
+            position: relative;
+        `;
+
+        carousel.style.cssText += `
+            display: flex;
+            will-change: transform;
+            transition: none;
+        `;
+
+        startAutoScroll();
+        console.log('✅ Carrusel de clientes inicializado');
+    }
+
+    function startAutoScroll() {
+        function animate() {
+            if (!isAutoScrollPaused && !isDragging && !isHovered) {
+                currentTransform -= autoScrollSpeed;
+                
+                const carouselWidth = carousel.scrollWidth;
+                
+                if (Math.abs(currentTransform) >= carouselWidth / 2) {
+                    currentTransform = 0;
+                }
+                
+                carousel.style.transform = `translateX(${currentTransform}px)`;
+            }
+            
+            animationId = requestAnimationFrame(animate);
+        }
+        
+        animate();
+    }
+
+    function pauseAutoScroll() {
+        isAutoScrollPaused = true;
+    }
+
+    function resumeAutoScroll() {
+        isAutoScrollPaused = false;
+    }
+
+    container.addEventListener('mouseenter', () => {
+        isHovered = true;
+        container.style.cursor = 'grab';
+    });
+    
+    container.addEventListener('mouseleave', () => {
+        if (!isDragging) {
+            isHovered = false;
+            container.style.cursor = 'grab';
+        }
+    });
+
+    container.addEventListener('mousedown', handleDragStart);
+    document.addEventListener('mousemove', handleDragMove);
+    document.addEventListener('mouseup', handleDragEnd);
+
+    function handleDragStart(e) {
+        isDragging = true;
+        pauseAutoScroll();
+        
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = currentTransform;
+        
+        container.style.cursor = 'grabbing';
+        carousel.style.transition = 'none';
+        
+        e.preventDefault();
+    }
+
+    function handleDragMove(e) {
+        if (!isDragging) return;
+        
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        
+        currentTransform = scrollLeft + walk;
+        
+        const maxScroll = -(carousel.scrollWidth - container.clientWidth);
+        currentTransform = Math.max(maxScroll, Math.min(0, currentTransform));
+        
+        carousel.style.transform = `translateX(${currentTransform}px)`;
+    }
+
+    function handleDragEnd() {
+        if (!isDragging) return;
+        
+        isDragging = false;
+        isHovered = false;
+        
+        container.style.cursor = 'grab';
+        carousel.style.transition = 'transform 0.3s ease';
+        
+        setTimeout(() => {
+            resumeAutoScroll();
+        }, 2000);
+    }
+
+    // Touch support
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchScrollLeft = 0;
+    let isTouching = false;
+    let isVerticalScroll = false;
+
+    container.addEventListener('touchstart', handleTouchStart, { passive: false });
+    container.addEventListener('touchmove', handleTouchMove, { passive: false });
+    container.addEventListener('touchend', handleTouchEnd);
+
+    function handleTouchStart(e) {
+        isTouching = true;
+        isVerticalScroll = false;
+        pauseAutoScroll();
+        
+        const touch = e.touches[0];
+        touchStartX = touch.clientX;
+        touchStartY = touch.clientY;
+        touchScrollLeft = currentTransform;
+        
+        carousel.style.transition = 'none';
+    }
+
+    function handleTouchMove(e) {
+        if (!isTouching) return;
+        
+        const touch = e.touches[0];
+        const deltaX = touch.clientX - touchStartX;
+        const deltaY = touch.clientY - touchStartY;
+        
+        if (!isVerticalScroll) {
+            if (Math.abs(deltaY) > Math.abs(deltaX)) {
+                isVerticalScroll = true;
+                return;
+            } else if (Math.abs(deltaX) > 10) {
+                e.preventDefault();
+            }
+        }
+        
+        if (isVerticalScroll) return;
+        
+        const walk = deltaX * 1.2;
+        currentTransform = touchScrollLeft + walk;
+        
+        const maxScroll = -(carousel.scrollWidth - container.clientWidth);
+        currentTransform = Math.max(maxScroll, Math.min(0, currentTransform));
+        
+        carousel.style.transform = `translateX(${currentTransform}px)`;
+    }
+
+    function handleTouchEnd() {
+        if (!isTouching) return;
+        
+        isTouching = false;
+        isVerticalScroll = false;
+        
+        carousel.style.transition = 'transform 0.3s ease';
+        
+        setTimeout(() => {
+            resumeAutoScroll();
+        }, 3000);
+    }
+
+    // Wheel scroll support
+    container.addEventListener('wheel', handleWheelScroll, { passive: false });
+
+    function handleWheelScroll(e) {
+        if (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+            e.preventDefault();
+            
+            pauseAutoScroll();
+            
+            const delta = e.deltaY || e.deltaX;
+            currentTransform -= delta * 0.5;
+            
+            const maxScroll = -(carousel.scrollWidth - container.clientWidth);
+            currentTransform = Math.max(maxScroll, Math.min(0, currentTransform));
+            
+            carousel.style.transition = 'transform 0.3s ease';
+            carousel.style.transform = `translateX(${currentTransform}px)`;
+            
+            setTimeout(() => {
+                resumeAutoScroll();
+            }, 1500);
+        }
+    }
+
+    function adjustCarouselSpeed() {
+        const screenWidth = window.innerWidth;
+        
+        if (screenWidth < 768) {
+            autoScrollSpeed = 0.7;
+        } else if (screenWidth < 1024) {
+            autoScrollSpeed = 0.8;
+        } else {
+            autoScrollSpeed = 1;
+        }
+    }
+
+    const debouncedResize = debounce(() => {
+        adjustCarouselSpeed();
+        
+        const maxScroll = -(carousel.scrollWidth - container.clientWidth);
+        if (currentTransform < maxScroll) {
+            currentTransform = maxScroll;
+            carousel.style.transform = `translateX(${currentTransform}px)`;
+        }
+    }, 250);
+
+    window.addEventListener('resize', debouncedResize);
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
+    initializeCarousel();
+    adjustCarouselSpeed();
+
+    window.addEventListener('beforeunload', () => {
+        if (animationId) {
+            cancelAnimationFrame(animationId);
+        }
+    });
+
+    console.log('🎉 Carrusel de clientes completamente inicializado');
+}
+
 // ================================
 // WHATSAPP FUNCIONALIDAD
 // ================================
@@ -905,7 +1164,7 @@ function initializeMobileNavigation() {
 function initializeWhatsApp() {
     console.log('💬 Inicializando WhatsApp...');
     
-    const WHATSAPP_NUMBER = '573229015631';
+    const WHATSAPP_NUMBER = '573195499887';
     const DEFAULT_MESSAGE = 'Hola, me interesa conocer más sobre sus servicios de Community Manager';
     
     // Función global para enviar mensajes
@@ -956,64 +1215,6 @@ function initializeWhatsApp() {
     }
     
     console.log('✅ WhatsApp inicializado');
-}
-
-// ================================
-// CARRUSEL DE CLIENTES
-// ================================
-
-function initializeClientsCarousel() {
-    console.log('🎠 Inicializando carrusel de clientes...');
-    
-    const carousel = document.querySelector('.clients-carousel');
-    const container = document.querySelector('.clients-carousel-container');
-    
-    if (!carousel || !container) {
-        console.log('ℹ️ Carrusel de clientes no encontrado');
-        return;
-    }
-
-    let isHovered = false;
-    let currentTransform = 0;
-    let autoScrollSpeed = 1;
-    let animationId = null;
-
-    function startAutoScroll() {
-        function animate() {
-            if (!isHovered) {
-                currentTransform -= autoScrollSpeed;
-                
-                const carouselWidth = carousel.scrollWidth;
-                
-                if (Math.abs(currentTransform) >= carouselWidth / 2) {
-                    currentTransform = 0;
-                }
-                
-                carousel.style.transform = `translateX(${currentTransform}px)`;
-            }
-            
-            animationId = requestAnimationFrame(animate);
-        }
-        
-        animate();
-    }
-
-    // Event listeners para hover
-    container.addEventListener('mouseenter', () => {
-        isHovered = true;
-    });
-    
-    container.addEventListener('mouseleave', () => {
-        isHovered = false;
-    });
-
-    // Configuración inicial
-    container.style.overflow = 'hidden';
-    carousel.style.display = 'flex';
-    carousel.style.willChange = 'transform';
-
-    startAutoScroll();
-    console.log('✅ Carrusel de clientes inicializado');
 }
 
 // ================================
