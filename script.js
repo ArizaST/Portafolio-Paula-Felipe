@@ -329,6 +329,9 @@ function initializeOtherFeatures() {
     // Inicializar galería Veró
     initializeVeroGallery();
     
+    // Inicializar reels
+    initializeReelsSystem();
+    
     // Inicializar video de fondo
     initializeHeroVideo();
     
@@ -348,8 +351,331 @@ function initializeOtherFeatures() {
 }
 
 // ================================
-// INICIALIZACIÓN DE GALERÍA VERÓ
+// SISTEMA DE REELS
 // ================================
+
+function initializeReelsSystem() {
+    console.log('🎬 Inicializando sistema de reels...');
+    
+    const reelContainers = document.querySelectorAll('.reel-video-container');
+    console.log(`🎯 Encontrados ${reelContainers.length} reels`);
+    
+    if (reelContainers.length === 0) {
+        console.log('ℹ️ No se encontraron reels');
+        return;
+    }
+    
+    let activeVideo = null;
+    
+    reelContainers.forEach((container, index) => {
+        setupSingleReel(container, index);
+    });
+    
+    function setupSingleReel(container, index) {
+        const video = container.querySelector('.reel-video');
+        const overlay = container.querySelector('.reel-overlay');
+        const playButton = container.querySelector('.reel-play-button');
+        const progressBar = container.querySelector('.reel-progress-bar');
+        const progress = container.querySelector('.reel-progress');
+        const volumeBtn = container.querySelector('.volume-btn');
+        const reelId = container.getAttribute('data-reel-id');
+        const loadingSpinner = container.querySelector('.reel-loading-spinner');
+        
+        if (!video) {
+            console.warn(`⚠️ Video no encontrado en reel ${index + 1}`);
+            return;
+        }
+        
+        console.log(`🎬 Configurando reel: ${reelId}`);
+        
+        // Play/Pause functionality
+        const toggleVideo = async () => {
+            if (video.paused) {
+                pauseAllVideos();
+                await playVideo(container, video, reelId);
+            } else {
+                pauseVideo(container, video, reelId);
+            }
+        };
+        
+        // Event listeners
+        if (overlay) {
+            overlay.addEventListener('click', toggleVideo);
+        }
+        
+        if (playButton) {
+            playButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleVideo();
+            });
+        }
+        
+        // Volume control
+        if (volumeBtn) {
+            volumeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleVolume(video, volumeBtn);
+            });
+        }
+        
+        // Progress bar
+        if (progress) {
+            progress.addEventListener('click', (e) => {
+                e.stopPropagation();
+                seekVideo(e, video, progress);
+            });
+        }
+        
+        // Video events
+        video.addEventListener('loadstart', () => {
+            container.classList.add('loading');
+            if (loadingSpinner) loadingSpinner.style.display = 'block';
+        });
+        
+        video.addEventListener('canplay', () => {
+            container.classList.remove('loading');
+            if (loadingSpinner) loadingSpinner.style.display = 'none';
+        });
+        
+        video.addEventListener('timeupdate', () => {
+            updateProgress(video, progressBar);
+        });
+        
+        video.addEventListener('ended', () => {
+            container.classList.remove('playing');
+            if (playButton) playButton.innerHTML = '▶';
+            activeVideo = null;
+            console.log(`🏁 Reel terminado: ${reelId}`);
+        });
+        
+        video.addEventListener('error', (e) => {
+            console.error(`❌ Error en reel ${reelId}:`, e);
+            container.classList.remove('loading');
+            if (loadingSpinner) loadingSpinner.style.display = 'none';
+            if (playButton) {
+                playButton.innerHTML = '❌';
+                setTimeout(() => {
+                    playButton.innerHTML = '▶';
+                }, 3000);
+            }
+        });
+        
+        console.log(`✅ Reel configurado: ${reelId}`);
+    }
+    
+    async function playVideo(container, video, reelId) {
+        try {
+            container.classList.add('loading');
+            
+            // Intentar reproducir con audio desde el inicio
+            video.muted = false;
+            await video.play();
+            
+            container.classList.remove('loading');
+            container.classList.add('playing');
+            
+            const playButton = container.querySelector('.reel-play-button');
+            if (playButton) playButton.innerHTML = '⏸';
+            
+            const volumeBtn = container.querySelector('.volume-btn');
+            if (volumeBtn) volumeBtn.textContent = '🔊';
+            
+            activeVideo = video;
+            
+            console.log(`✅ Reproduciendo con audio: ${reelId}`);
+            
+        } catch (error) {
+            console.log(`⚠️ Falló con audio, intentando muted: ${reelId}`);
+            container.classList.remove('loading');
+            
+            // Fallback: intentar con muted si falla por políticas del navegador
+            if (error.name === 'NotAllowedError' || error.name === 'NotSupportedError') {
+                video.muted = true;
+                try {
+                    await video.play();
+                    container.classList.add('playing');
+                    activeVideo = video;
+                    
+                    const playButton = container.querySelector('.reel-play-button');
+                    if (playButton) playButton.innerHTML = '⏸';
+                    
+                    const volumeBtn = container.querySelector('.volume-btn');
+                    if (volumeBtn) volumeBtn.textContent = '🔇';
+                    
+                    console.log(`✅ Reproduciendo (muted): ${reelId}`);
+                    console.log(`💡 Haz click en el botón de volumen para activar audio`);
+                    
+                    // Mostrar indicador visual de que está muted
+                    showMutedIndicator(container);
+                    
+                } catch (e) {
+                    console.error(`❌ Falló completamente en ${reelId}:`, e);
+                    container.classList.remove('loading');
+                }
+            } else {
+                console.error(`❌ Error inesperado en ${reelId}:`, error);
+            }
+        }
+    }
+    
+    function showMutedIndicator(container) {
+        // Crear indicador temporal de que está muted
+        const indicator = document.createElement('div');
+        indicator.className = 'muted-indicator';
+        indicator.innerHTML = '🔇 Click para audio';
+        indicator.style.cssText = `
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            z-index: 10;
+            animation: fadeOut 3s ease forwards;
+        `;
+        
+        container.appendChild(indicator);
+        
+        // Remover después de 3 segundos
+        setTimeout(() => {
+            if (indicator.parentNode) {
+                indicator.remove();
+            }
+        }, 3000);
+        
+        // Agregar CSS para la animación
+        if (!document.getElementById('muted-indicator-styles')) {
+            const style = document.createElement('style');
+            style.id = 'muted-indicator-styles';
+            style.textContent = `
+                @keyframes fadeOut {
+                    0% { opacity: 1; }
+                    70% { opacity: 1; }
+                    100% { opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+    
+    function pauseVideo(container, video, reelId) {
+        video.pause();
+        container.classList.remove('playing');
+        
+        const playButton = container.querySelector('.reel-play-button');
+        if (playButton) playButton.innerHTML = '▶';
+        
+        if (activeVideo === video) {
+            activeVideo = null;
+        }
+        
+        console.log(`⏸️ Pausado: ${reelId}`);
+    }
+    
+    function pauseAllVideos() {
+        reelContainers.forEach(container => {
+            const video = container.querySelector('.reel-video');
+            const reelId = container.getAttribute('data-reel-id');
+            
+            if (video && !video.paused) {
+                pauseVideo(container, video, reelId);
+            }
+        });
+    }
+    
+    function toggleVolume(video, button) {
+        if (video.muted) {
+            video.muted = false;
+            button.textContent = '🔊';
+            
+            // Remover indicador de muted si existe
+            const container = video.closest('.reel-video-container');
+            const mutedIndicator = container?.querySelector('.muted-indicator');
+            if (mutedIndicator) {
+                mutedIndicator.remove();
+            }
+            
+            console.log('🔊 Audio activado');
+        } else {
+            video.muted = true;
+            button.textContent = '🔇';
+            console.log('🔇 Audio silenciado');
+        }
+    }
+    
+    function seekVideo(event, video, progressContainer) {
+        const rect = progressContainer.getBoundingClientRect();
+        const clickX = event.clientX - rect.left;
+        const percentage = clickX / rect.width;
+        const newTime = percentage * video.duration;
+        
+        if (!isNaN(newTime) && isFinite(newTime)) {
+            video.currentTime = newTime;
+            console.log(`⏭️ Saltado a: ${formatTime(newTime)}`);
+        }
+    }
+    
+    function updateProgress(video, progressBar) {
+        if (!video.duration || !progressBar) return;
+        
+        const percentage = (video.currentTime / video.duration) * 100;
+        progressBar.style.width = percentage + '%';
+    }
+    
+    function formatTime(seconds) {
+        if (!isFinite(seconds) || isNaN(seconds)) return '0:00';
+        
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    // Pausar videos cuando la página se oculta
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            pauseAllVideos();
+            console.log('⏸️ Todos los videos pausados (página oculta)');
+        }
+    });
+    
+    // Intersection Observer para pausar videos fuera de vista
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target.querySelector('.reel-video');
+            const reelId = entry.target.getAttribute('data-reel-id');
+            
+            if (!entry.isIntersecting && video && !video.paused) {
+                pauseVideo(entry.target, video, reelId);
+                console.log(`⏸️ Pausado por salir de vista: ${reelId}`);
+            }
+        });
+    }, { threshold: 0.3 });
+    
+    reelContainers.forEach(container => {
+        observer.observe(container);
+    });
+    
+    // API pública para control de reels
+    window.reelsManager = {
+        pauseAll: pauseAllVideos,
+        getActive: () => activeVideo,
+        playById: (reelId) => {
+            const container = document.querySelector(`[data-reel-id="${reelId}"]`);
+            if (container) {
+                const video = container.querySelector('.reel-video');
+                if (video) {
+                    pauseAllVideos();
+                    playVideo(container, video, reelId);
+                }
+            }
+        }
+    };
+    
+    console.log('✅ Sistema de reels inicializado');
+    console.log('🎮 API disponible en window.reelsManager');
+}
 
 function initializeVeroGallery() {
     console.log('🎨 Inicializando galería Veró...');
@@ -765,5 +1091,7 @@ console.log('  • portfolioFilters.showRestaurantes() - Filtrar restaurantes');
 console.log('  • portfolioFilters.showSalud() - Filtrar salud');
 console.log('  • portfolioFilters.showInmobiliario() - Filtrar inmobiliario');
 console.log('  • portfolioFilters.showAllSectors() - Mostrar todos temporalmente');
+console.log('  • reelsManager.pauseAll() - Pausar todos los reels');
+console.log('  • reelsManager.playById(id) - Reproducir reel específico');
 console.log('  • sendWhatsAppMessage(tipo) - Enviar WhatsApp');
 console.log('  • debugPortfolio() - Debug general');
