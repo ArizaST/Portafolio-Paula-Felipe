@@ -346,6 +346,8 @@ function initializeOtherFeatures() {
     
     // Smooth scrolling
     initializeSmoothScrolling();
+
+    initializeScrollToTop();
     
     console.log('✅ Todas las funcionalidades inicializadas');
 }
@@ -1279,6 +1281,125 @@ window.handleVideoLoad = function() {
 window.handleVideoError = function() {
     document.querySelector('.hero-fallback')?.style.setProperty('display', 'block');
 };
+
+// ================================
+// SCROLL TO TOP FUNCTIONALITY
+// ================================
+
+function initializeScrollToTop() {
+    console.log('🚀 Inicializando Scroll to Top...');
+    
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+    
+    if (!scrollToTopBtn) {
+        console.warn('⚠️ Botón scroll-to-top no encontrado');
+        return;
+    }
+    
+    let isVisible = false;
+    let ticking = false;
+    
+    // Configuración
+    const config = {
+        showAfter: 300,        // Mostrar después de 300px de scroll
+        smoothScroll: true,    // Usar scroll suave
+        animateEntry: true     // Animar entrada del botón
+    };
+    
+    // Función principal de scroll
+    function handleScroll() {
+        const scrollY = window.pageYOffset;
+        const shouldShow = scrollY > config.showAfter;
+        
+        if (shouldShow && !isVisible) {
+            showButton();
+        } else if (!shouldShow && isVisible) {
+            hideButton();
+        }
+        
+        ticking = false;
+    }
+    
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(handleScroll);
+            ticking = true;
+        }
+    }
+    
+    // Funciones de visibilidad
+    function showButton() {
+        isVisible = true;
+        scrollToTopBtn.classList.add('visible');
+        
+        if (config.animateEntry) {
+            scrollToTopBtn.classList.add('animate-in');
+            setTimeout(() => {
+                scrollToTopBtn.classList.remove('animate-in');
+            }, 600);
+        }
+        
+        console.log('👆 Botón scroll-to-top mostrado');
+    }
+    
+    function hideButton() {
+        isVisible = false;
+        scrollToTopBtn.classList.remove('visible');
+        console.log('👇 Botón scroll-to-top ocultado');
+    }
+    
+    // Función de scroll to top
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        
+        console.log('🔝 Scrolling to top');
+        
+        // Analytics opcional
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'scroll_to_top', {
+                event_category: 'Navigation',
+                event_label: 'Scroll to Top Button'
+            });
+        }
+    }
+    
+    // Event listeners
+    scrollToTopBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        scrollToTop();
+        
+        // Efecto visual de click
+        this.style.transform = 'scale(0.95)';
+        setTimeout(() => {
+            this.style.transform = '';
+        }, 150);
+    });
+    
+    window.addEventListener('scroll', requestTick, { passive: true });
+    
+    // Estado inicial
+    scrollToTopBtn.style.cssText += `
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px) scale(0.8);
+    `;
+    
+    // Check inicial
+    setTimeout(requestTick, 100);
+    
+    // API pública
+    window.scrollToTopAPI = {
+        show: showButton,
+        hide: hideButton,
+        scrollToTop: scrollToTop,
+        isVisible: () => isVisible
+    };
+    
+    console.log('✅ Scroll to Top inicializado');
+}
 
 // ================================
 // LOGS FINALES

@@ -37,7 +37,11 @@ const predefinedMessages = {
     'sitio-web': 'Hola, me interesa un Sitio Web Informativo',
     'tienda-online': 'Hola, me interesa una Tienda en Línea',
     'consulta-web': 'Hola, me gustaría una consulta gratuita sobre desarrollo web',
-    'consulta-general': 'Hola, me gustaría recibir información sobre sus servicios'
+    'consulta-general': 'Hola, me gustaría recibir información sobre sus servicios',
+    'consulta-estrategia': 'Hola, me interesa una estrategia digital personalizada para mi negocio',
+    'consulta-analisis': 'Hola, me gustaría analizar el crecimiento y resultados de mi marca',
+    'consulta-acompanamiento': 'Hola, me interesa conocer más sobre el acompañamiento profesional',
+    'consulta-optimizacion': 'Hola, me interesa optimizar mi estrategia digital actual'
 };
 
 // ================================

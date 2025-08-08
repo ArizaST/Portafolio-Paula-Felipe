@@ -11,15 +11,16 @@
 <body class="page-loading">
     <header>
     <nav>
-        <div class="logo">Portafolio</div>
-        
+        <div class="logo">
+        <a href="index.html">Portafolio</a>
+        </div>
         <ul class="nav-links">
             <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#portfolio">Portafolio</a></li>
-            <li><a href="#clientes">Nuestros Clientes</a></li>
-            <li><a href="#servicios">Nuestros Servicios</a></li>
+            <li><a href="#servicios">Nuestros Servicios</a></li>            
             <li><a href="#paquetes">Paquetes</a></li>
+            <li><a href="#clientes">Nuestros Clientes</a></li>
             <li><a href="#desarrollo-web">Desarrollo Web</a></li>
+            <li><a href="#portfolio">Portafolio</a></li>
             <li><a href="#contacto">Contacto</a></li>
         </ul>
         
@@ -87,7 +88,845 @@
     </div>
 </section>
 
+<!-- ================================
+     SECCIÓN RESUMEN SIMPLIFICADA - VA DESPUÉS DEL HERO
+     ================================ -->
+<section class="summary-section">
+    <div class="container">
+        <div class="summary-content">
+            <div class="summary-left">
+                <h2>Marketing Digital en Bogotá y Colombia</h2>
+                <p class="summary-subtitle">
+                    Potencia tu presencia online y multiplica tus resultados con estrategias digitales personalizadas.
+                </p>
+                
+                <ul class="summary-features">
+                    <li>Gestión de Redes Sociales</li>
+                    <li>Estrategias Digitales Personalizadas</li>
+                    <li>Acompañamiento Profesional</li>
+                    <li>Análisis y Optimización Continua</li>
+                </ul>
+                
+                <button class="summary-cta-btn" onclick="sendWhatsAppMessage('consulta-general')">
+                                Solicitar Estrategia →
+                </button>
+            </div>
+            
+            <div class="summary-right">
+                <div class="summary-image-container">
+                    <div class="summary-badge">Premium</div>
+                    <img src="Img/estrategia.jpeg" alt="Estrategias digitales avanzadas" class="summary-image">
+                    <div class="summary-overlay">
+                        <h4>Estrategias digitales avanzadas</h4>
+                        <p>Convertimos datos en estrategias que generan crecimiento real para tu negocio</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
     <!-- ================================
+         SERVICIOS
+         ================================ -->
+    <section id="servicios" class="digital-services-section">
+        <div class="container">
+            <div class="digital-services-header">
+                <h2>Nuestros Servicios</h2>
+                <p class="digital-services-subtitle">
+                    En el mundo digital actual, tu presencia online determina el éxito de tu negocio. Nos especializamos en crear estrategias digitales integrales que no solo aumentan tu visibilidad, sino que generan resultados reales y medibles para tu empresa.
+                </p>
+            </div>
+
+            <div class="digital-services-grid">
+                <!-- Gestión Profesional de Redes Sociales -->
+                <div class="digital-service-card" data-service="social-media">
+                    <div class="service-image" style="background-image: url('Img/gestion.jpeg')">
+                        <div class="service-title-overlay">
+                            <h3>Gestión Profesional de Redes Sociales</h3>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <p class="service-description1">
+                            Creamos y ejecutamos estrategias de contenido que conectan emocionalmente con tu audiencia, aumentando el engagement y convirtiendo seguidores en clientes reales.
+                        </p>
+                        <div class="service-cta-container">
+                            <button class="service-cta-btn" onclick="sendWhatsAppMessage('plan-completo')">
+                                Ver Planes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estrategia Digital Personalizada -->
+                <div class="digital-service-card" data-service="digital-strategy">
+                    <div class="service-image" style="background-image: url('Img/estrategia.jpeg')">
+                        <div class="service-title-overlay">
+                            <h3>Estrategia Digital Personalizada</h3>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <p class="service-description1">
+                            Desarrollamos planes específicos para tu industria y objetivos, utilizando análisis de competencia y estudios de mercado para posicionarte como líder en tu sector.
+                        </p>
+                        <div class="service-cta-container">
+                            <button class="service-cta-btn" onclick="sendWhatsAppMessage('consulta-estrategia')">
+                                Solicitar Estrategia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crecimiento Medible y Sostenible -->
+                <div class="digital-service-card" data-service="growth">
+                    <div class="service-image" style="background-image: url('Img/crecimiento.jpeg')">
+                        <div class="service-title-overlay">
+                            <h3>Crecimiento Medible y Sostenible</h3>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <p class="service-description1">
+                            Implementamos métricas y KPIs que demuestran el retorno de inversión de cada acción digital, garantizando un crecimiento constante de tu marca.
+                        </p>
+                        <div class="service-cta-container">
+                            <button class="service-cta-btn" onclick="sendWhatsAppMessage('consulta-analisis')">
+                                Analizar Resultados
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Presencia Digital Completa -->
+                <div class="digital-service-card" data-service="digital-presence">
+                    <div class="service-image" style="background-image: url('Img/redes.jpeg')">
+                        <div class="service-title-overlay">
+                            <h3>Presencia Digital Completa</h3>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <p class="service-description1">
+                            Desde redes sociales hasta desarrollo web, creamos un ecosistema digital cohesivo que fortalece tu marca en todos los puntos de contacto con tus clientes.
+                        </p>
+                        <div class="service-cta-container">
+                            <button class="service-cta-btn" onclick="sendWhatsAppMessage('consulta-analisis')">
+                                Crear Presencia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acompañamiento Profesional -->
+                <div class="digital-service-card" data-service="support">
+                    <div class="service-image" style="background-image: url('Img/acompañamiento.jpeg')">
+                        <div class="service-title-overlay">
+                            <h3>Acompañamiento Profesional</h3>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <p class="service-description1">
+                            Contarás con un equipo que te acompaña de forma cercana y constante, comunicándose contigo regularmente y brindando seguimiento semanal a los contenidos y estrategias.
+                        </p>
+                        <div class="service-cta-container">
+                            <button class="service-cta-btn" onclick="sendWhatsAppMessage('consulta-acompanamiento')">
+                                Conocer Equipo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Análisis y Optimización Continua -->
+                <div class="digital-service-card" data-service="analysis">
+                    <div class="service-image" style="background-image: url('Img/analisis.jpeg')">
+                        <div class="service-title-overlay">
+                            <h3>Análisis y Optimización Continua</h3>
+                        </div>
+                    </div>
+                    <div class="service-content">
+                        <p class="service-description1">
+                            Realizamos revisiones mensuales de tu competencia para identificar oportunidades de mejora y diferenciación, ajustando estrategias basadas en resultados reales.
+                        </p>
+                        <div class="service-cta-container">
+                            <button class="service-cta-btn" onclick="sendWhatsAppMessage('consulta-optimizacion')">
+                                Optimizar Estrategia
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="paquetes">
+        <div class="container">
+            <h2>Paquetes Community Manager</h2>
+            <div class="packages-grid">
+                <div class="package-card">
+                    <h3 class="package-title">Plan Básico</h3>
+                    <ul class="package-features">
+                        <li>Redes: Instagram</li>
+                        <li>Identidad visual</li>
+                        <li>1 grabación de contenido mensual</li>
+                        <li>Creación de estrategia, auditoría inicial y planificación</li>
+                        <li>Creación buyer persona</li>
+                        <li>8 posts al mes (incluyendo reels, carrusel y post)</li>
+                        <li>Textos persuasivos</li>
+                        <li>5 stories semanales</li>
+                        <li>Parrilla de contenido</li>
+                        <li>Optimización del perfil</li>
+                        <li>Portada de 5 highlights</li>
+                        <li>Textos persuasivos</li>
+                        <li>Buyer persona</li>
+                    </ul>
+                    <button class="cta-button" onclick="sendWhatsAppMessage('plan-basico')">Elegir Plan</button>
+                </div>
+
+                <div class="package-card">
+                    <h3 class="package-title">Plan Medio</h3>
+                    <ul class="package-features">
+                        <li>Redes: Instagram y Facebook</li>
+                        <li>Optimización de página de Facebook</li>
+                        <li>Identidad visual</li>
+                        <li>2 grabaciones de contenido mensual</li>
+                        <li>Creación de estrategia, auditoría inicial y planificación</li>
+                        <li>Creación buyer persona</li>
+                        <li>10 posts al mes (incluyendo reels, carrusel y post)</li>
+                        <li>Textos persuasivos</li>
+                        <li>8 stories semanales</li>
+                        <li>Gestión activa a comentarios</li>
+                        <li>Parrilla de contenido</li>
+                        <li>Link del perfil y 5 highlights</li>
+                        <li>Optimización del perfil</li>
+                    </ul>
+                    <button class="cta-button" onclick="sendWhatsAppMessage('plan-medio')">Elegir Plan</button>
+                </div>
+
+                <div class="package-card featured">
+                    <h3 class="package-title">Plan Completo</h3>
+                    <ul class="package-features">
+                        <li>Redes: Instagram y Facebook</li>
+                        <li>Optimización de página de Facebook</li>
+                        <li>Identidad visual</li>
+                        <li>Grabación de contenido semanal</li>
+                        <li>Análisis de competencia, creación de estrategia, auditoría inicial y planificación</li>
+                        <li>Creación buyer persona</li>
+                        <li>14 posts al mes (incluyendo reels, carrusel y post)</li>
+                        <li>12 stories semanales</li>
+                        <li>Gestión activa a comentarios, textos persuasivos y chats</li>
+                        <li>Parrilla de contenido</li>
+                        <li>Link del perfil y 7 highlights</li>
+                        <li>Optimización del perfil</li>
+                        <li>Estrategia para fechas especiales</li>
+                    </ul>
+                    <button class="cta-button" onclick="sendWhatsAppMessage('plan-completo')">Elegir Plan</button>
+                </div>
+
+                <div class="package-card">
+                    <h3 class="package-title">Plan TikTok</h3>
+                    <ul class="package-features">
+                        <li>Creación u optimización de perfil</li>
+                        <li>Creación de estrategia, auditoría inicial y planificación</li>
+                        <li>Desde 8 videos mensuales</li>
+                        <li>Textos persuasivos</li>
+                        <li>Parrilla de contenido</li>
+                        <li>Link del perfil</li>
+                        <li>Respuesta a comentarios</li>
+                        <li>Creación y edición de contenido</li>
+                    </ul>
+                    <button class="cta-button" onclick="sendWhatsAppMessage('plan-tiktok')">Elegir Plan</button>
+                </div>
+            </div>
+
+            <div class="additional-services-section">
+    <h3>Servicios Adicionales Disponibles</h3>
+    <div class="additional-services-grid">
+
+        <div class="additional-service-card">
+            <div class="service-icon">
+                <h4>Branding e Identidad</h4>
+            </div>
+            <div class="service-content">
+                <p>Creación de nombre, concepto, tono y personalidad de marca. Diseño de identidad visual completa (logo, colores, tipografías)</p>
+                <div class="price-section">
+                    <div class="service-price">
+                        <span class="pricing-note">Proyecto completo</span>
+                    </div>
+                </div>
+            </div>
+            <div class="service-overlay">
+                <p>✓ Investigación de mercado<br>✓ Naming profesional<br>✓ Manual de marca<br>✓ Aplicaciones digitales</p>
+                <button class="service-cta">Cotizar Ahora</button>
+            </div>
+        </div>
+
+        <div class="additional-service-card">
+            <div class="service-icon">
+                <h4>WhatsApp Business PRO</h4>
+            </div>
+            <div class="service-content">
+                <p>Configuración profesional y optimización completa para maximizar la comunicación con tus clientes</p>
+                <div class="price-section">
+                    <div class="service-price">
+                        <span class="pricing-note">Configuración única</span>
+                    </div>
+                </div>
+            </div>
+            <div class="service-overlay">
+                <p>✓ Catálogo optimizado<br>✓ Respuestas automáticas<br>✓ Etiquetas y organización<br>✓ Integración con CRM</p>
+                <button class="service-cta">Más Información</button>
+            </div>
+        </div>
+
+        <div class="additional-service-card">
+            <div class="service-icon">
+                <h4>YouTube Shorts</h4>
+            </div>
+            <div class="service-content">
+                <p>Producción y gestión de contenido vertical optimizado para alcance viral</p>
+                <div class="price-section">
+                    <div class="service-price">
+                        <span class="pricing-note">por mes</span>
+                    </div>
+                </div>
+            </div>
+            <div class="service-overlay">
+                <p>✓ 8-12 videos mensuales<br>✓ Edición profesional<br>✓ Optimización SEO<br>✓ Análisis de rendimiento</p>
+                <button class="service-cta">Empezar</button>
+            </div>
+        </div>
+
+        <div class="additional-service-card">
+            <div class="service-icon">
+                <h4>Google Mi Negocio</h4>
+            </div>
+            <div class="service-content">
+                <p>Configuración y optimización para búsquedas locales y mayor visibilidad</p>
+                <div class="price-section">
+                    <div class="service-price">
+                        <span class="pricing-note">Setup completo</span>
+                    </div>
+                </div>
+            </div>
+            <div class="service-overlay">
+                <p>✓ Optimización de perfil<br>✓ Gestión de reseñas<br>✓ Posts regulares<br>✓ Reportes mensuales</p>
+                <button class="service-cta">Comenzar</button>
+            </div>
+        </div>
+
+        <div class="additional-service-card">
+            <div class="service-icon">
+                <h4>Meta Ads Management</h4>
+            </div>
+            <div class="service-content">
+                <p>Gestión profesional de campañas publicitarias en Facebook e Instagram</p>
+                <div class="price-section">
+                    <div class="service-price">
+                        <span>15% del presupuesto</span>
+                        <span class="pricing-note">+ costo de pauta</span>
+                    </div>
+                </div>
+            </div>
+            <div class="service-overlay">
+                <p>✓ Estrategia publicitaria<br>✓ Diseño de anuncios<br>✓ Segmentación avanzada<br>✓ Reportes detallados</p>
+                <button class="service-cta">Consultar</button>
+            </div>
+        </div>
+
+        <div class="additional-service-card">
+            <div class="service-icon">
+                <h4>Producción Audiovisual</h4>
+            </div>
+            <div class="service-content">
+                <p>Videos corporativos, comerciales y contenido multimedia profesional</p>
+                <div class="price-section">
+                    <div class="service-price">
+                        <span class="pricing-note">por proyecto</span>
+                    </div>
+                </div>
+            </div>
+            <div class="service-overlay">
+                <p>✓ Preproducción completa<br>✓ Grabación profesional<br>✓ Edición avanzada<br>✓ Motion graphics</p>
+                <button class="service-cta">Comenzar</button>
+            </div>
+        </div>
+
+        <div class="additional-service-card premium">
+            <div class="service-icon">
+                <h4>Email Marketing</h4>
+            </div>
+            <div class="service-content">
+                <p>Campañas automatizadas y estratégicas que mantienen a tus clientes comprometidos</p>
+                <div class="price-section">
+                    <div class="service-price">
+                        <span class="pricing-note">mensual</span>
+                    </div>
+                    <div class="price-badge">POPULAR</div>
+                </div>
+            </div>
+            <div class="service-overlay">
+                <p>✓ Diseño de newsletters<br>✓ Automatizaciones<br>✓ Segmentación de listas<br>✓ Análisis de resultados</p>
+                <button class="service-cta">Empezar</button>
+            </div>
+        </div>
+
+        <div class="additional-service-card">
+            <div class="service-icon">
+                <h4>Consultoría Digital</h4>
+            </div>
+            <div class="service-content">
+                <p>Asesoría estratégica personalizada para optimizar tu presencia digital</p>
+                <div class="price-section">
+                    <div class="service-price">
+                        <span class="pricing-note">por sesión</span>
+                    </div>
+                </div>
+            </div>
+            <div class="service-overlay">
+                <p>✓ Auditoría digital<br>✓ Estrategia personalizada<br>✓ Plan de acción<br>✓ Seguimiento mensual</p>
+                <button class="service-cta">Agendar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+            <div class="advanced-solutions-section">
+                <h3>Soluciones Digitales Avanzadas</h3>
+                <p class="advanced-intro">Llevamos tu presencia digital al siguiente nivel con tecnologías de vanguardia que destacan tu marca en el mercado competitivo actual.</p>
+                
+                <div class="advanced-services-grid">
+                    <div class="advanced-service-card" data-service="meta-ads">
+                        <div class="service-header">
+                            <div class="service-badge">META ADS</div>
+                            <h4>Gestión de Pauta Publicitaria</h4>
+                        </div>
+                        <div class="service-details">
+                            <p>Segmentación estratégica, diseño de anuncios optimizados e informes detallados de rendimiento</p>
+                            <div class="pricing-info">
+                                <span class="pricing-note">% según valor a pautar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="advanced-service-card" data-service="design">
+                        <div class="service-header">
+                            <div class="service-badge">DISEÑO</div>
+                            <h4>Diseño de Piezas Físicas</h4>
+                        </div>
+                        <div class="service-details">
+                            <p>Volantes, menús, banners, stickers y packaging profesional para tu marca</p>
+                            <div class="pricing-info">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="advanced-service-card" data-service="3d-models">
+                        <div class="service-header">
+                            <div class="service-badge">3D</div>
+                            <h4>Modelos 3D de Productos</h4>
+                        </div>
+                        <div class="service-details">
+                            <p>Visualizaciones tridimensionales profesionales que destacan las características de tus productos</p>
+                            <div class="pricing-info">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="advanced-service-card" data-service="animations">
+                        <div class="service-header">
+                            <div class="service-badge">MOTION</div>
+                            <h4>Animaciones para Producto o Marca</h4>
+                        </div>
+                        <div class="service-details">
+                            <p>Motion graphics y animaciones que dan vida a tu marca con impacto visual extraordinario</p>
+                            <div class="pricing-info">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="advanced-service-card" data-service="renders">
+                        <div class="service-header">
+                            <div class="service-badge">RENDER</div>
+                            <h4>Renders Realistas</h4>
+                        </div>
+                        <div class="service-details">
+                            <p>Visualizaciones fotorrealistas de productos, espacios o conceptos con calidad cinematográfica</p>
+                            <div class="pricing-info">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="advanced-service-card" data-service="characters">
+                        <div class="service-header">
+                            <div class="service-badge">CHARACTER</div>
+                            <h4>Diseño de Personajes Digitales</h4>
+                        </div>
+                        <div class="service-details">
+                            <p>Creación de mascotas corporativas y personajes únicos que representen la personalidad de tu marca</p>
+                            <div class="pricing-info">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="advanced-service-card" data-service="events">
+                        <div class="service-header">
+                            <div class="service-badge">EVENTOS</div>
+                            <h4>Cubrimiento de Eventos</h4>
+                        </div>
+                        <div class="service-details">
+                            <p>Grabación y edición profesional de lanzamientos, inauguraciones y eventos comerciales</p>
+                            <div class="pricing-info">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="advanced-service-card" data-service="email-marketing">
+                        <div class="service-header">
+                            <div class="service-badge">EMAIL</div>
+                            <h4>Email Marketing</h4>
+                        </div>
+                        <div class="service-details">
+                            <p>Campañas automatizadas y estratégicas que mantienen a tus clientes comprometidos con tu marca</p>
+                            <div class="pricing-info">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="advanced-service-card" data-service="email-marketing">
+                        <div class="service-header">
+                            <div class="service-badge">GOOGLE</div>
+                            <h4>Gestión de Google Business</h4>
+                        </div>
+                        <div class="service-details">
+                            <p>Optimización completa de tu perfil para búsquedas locales. Gestión profesional de reseñas, posts regulares y estrategias para aumentar tu visibilidad en Google Maps</p>
+                            <div class="pricing-info">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="clientes" class="clients-section">
+        <div class="container">
+            <h2>Nuestros Clientes</h2>
+            <div class="clients-carousel-container">
+                <div class="clients-carousel">
+                    <div class="client-logo">
+                        <img src="Img/Clientes/1.png" alt="Komilona" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/2.png" alt="Amar" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/3.png" alt="Almarios" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/4.png" alt="Dental Flap" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/5.png" alt="P&J Abogados" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/6.png" alt="Entre-Metros" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/7.png" alt="El Galapago" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/8.png" alt="El Galapago Estacion" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/9.png" alt="El molcajete" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/10.png" alt="FisioActivity Sabana" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/11.jpeg" alt="Sika Center" class="client-logo-image">
+                    </div>
+                    
+                    <!-- Duplicados para efecto de loop infinito -->
+                    <div class="client-logo">
+                        <img src="Img/Clientes/1.png" alt="Komilona" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/2.png" alt="Amar" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/3.png" alt="Almarios" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/4.png" alt="Dental Flap" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/5.png" alt="P&J Abogados" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/6.png" alt="Entre-Metros" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/7.png" alt="El Galapago" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/8.png" alt="El Galapago Estacion" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/9.png" alt="El molcajete" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/10.png" alt="FisioActivity Sabana" class="client-logo-image">
+                    </div>
+                    <div class="client-logo">
+                        <img src="Img/Clientes/11.jpeg" alt="Sika Center" class="client-logo-image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================
+     SECCIÓN DESARROLLO WEB COMPLETA
+     ================================ -->
+
+<section id="desarrollo-web" class="web-development-section">
+    <div class="container">
+        <!-- Header de la sección -->
+        <div class="web-dev-header">
+            <h2>Desarrollo y Diseño Web</h2>
+            <p class="web-dev-subtitle">Creamos experiencias digitales que convierten visitantes en clientes. Desde landing pages hasta tiendas online completas, desarrollamos soluciones web que impulsan tu negocio.</p>
+        </div>
+
+        <!-- Opciones principales de desarrollo web -->
+        <div class="web-options-grid">
+            <!-- Opción 1: Landing Page -->
+            <div class="web-option-card featured" data-option="landing">
+                <div class="option-badge">
+                    <span class="badge-text">OPCIÓN 1</span>
+                </div>
+                <div class="option-header">
+                    <h3>Landing Page</h3>
+                    <div class="option-price">
+                    </div>
+                </div>
+                <div class="option-description">
+                    <p><strong>Sitio de una sola sección</strong> (ideal para promociones, lanzamientos, registro)</p>
+                </div>
+                <div class="option-features">
+                    <ul>
+                        <li>Diseño responsive optimizado</li>
+                        <li>Formulario de contacto integrado</li>
+                        <li>Integración con WhatsApp</li>
+                        <li>Optimización SEO básica</li>
+                        <li>Hosting incluido por 1 año</li>
+                        <li>Certificado SSL gratuito</li>
+                    </ul>
+                </div>
+                <div class="option-cta">
+                    <button class="web-option-btn" onclick="sendWhatsAppMessage('landing-page')">
+                        Solicitar Landing Page
+                    </button>
+                    <span class="delivery-time">Entrega: 7-11 días</span>
+                </div>
+            </div>
+
+            <!-- Opción 2: Sitio Web Informativo -->
+            <div class="web-option-card popular" data-option="informativo">
+                <div class="option-badge">
+                    <span class="badge-text">OPCIÓN 2</span>
+                </div>
+                <div class="popular-flag">MÁS POPULAR</div>
+                <div class="option-header">
+                    <h3>Sitio Web Informativo</h3>
+                    <div class="option-price">
+                    </div>
+                </div>
+                <div class="option-description">
+                    <p><strong>4 a 6 secciones</strong> (Inicio, Nosotros, Servicios, Contacto, Productos, Blog). Responsive (móvil y escritorio). Integración con WhatsApp</p>
+                </div>
+                <div class="option-features">
+                    <ul>
+                        <li>Hasta 6 páginas/secciones</li>
+                        <li>Panel de administración en PHP</li>
+                        <li>Blog integrado con CMS</li>
+                        <li>Galería de productos/servicios</li>
+                        <li>Formularios de contacto con PHP</li>
+                        <li>Integración redes sociales</li>
+                        <li>Google Maps integrado</li>
+                        <li>Base de datos MySQL</li>
+                        <li>Optimización SEO avanzada</li>
+                    </ul>
+                </div>
+                <div class="option-cta">
+                    <button class="web-option-btn" onclick="sendWhatsAppMessage('sitio-informativo')">
+                        Solicitar Sitio Informativo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Opción 3: Tienda en Línea -->
+            <div class="web-option-card premium" data-option="tienda">
+                <div class="option-badge">
+                    <span class="badge-text">OPCIÓN 3</span>
+                </div>
+                <div class="option-header">
+                    <h3>Tienda en Línea</h3>
+                    <div class="option-price">
+                    </div>
+                </div>
+                <div class="option-description">
+                    <p><strong>Catálogo de productos, pasarela de pagos, carrito, envíos.</strong> Integración con WhatsApp y correo. Capacitación para gestión del cliente y posicionamiento SEO.</p>
+                </div>
+                <div class="option-features">
+                    <ul>
+                        <li>Catálogo de productos ilimitado</li>
+                        <li>Carrito de compras con JavaScript</li>
+                        <li>Pasarelas de pago (PSE, tarjetas)</li>
+                        <li>Sistema de inventarios en MySQL</li>
+                        <li>Gestión de pedidos con PHP</li>
+                        <li>Calculadora de envíos</li>
+                        <li>Panel administrativo completo</li>
+                        <li>Sistema de usuarios y perfiles</li>
+                        <li>Capacitación incluida</li>
+                        <li>Soporte técnico 3 meses</li>
+                    </ul>
+                </div>
+                <div class="option-cta">
+                    <button class="web-option-btn" onclick="sendWhatsAppMessage('tienda-online')">
+                        Solicitar Tienda Online
+                    </button>
+                    <span class="delivery-time">Entrega: 15-25 días</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tecnologías utilizadas -->
+        <div class="technologies-section">
+            <h3>Tecnologías que Utilizamos</h3>
+            <div class="tech-stack-grid">
+                <div class="tech-item">
+                    <div class="tech-icon">🌐</div>
+                    <span>HTML5</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🎨</div>
+                    <span>CSS3</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">⚡</div>
+                    <span>JavaScript</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🐘</div>
+                    <span>PHP</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🗄️</div>
+                    <span>MySQL</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">💨</div>
+                    <span>Tailwind CSS</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">📱</div>
+                    <span>Responsive</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🔒</div>
+                    <span>SSL Security</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">⚙️</div>
+                    <span>CMS Custom</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🚀</div>
+                    <span>Optimización SEO</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">💳</div>
+                    <span>Pasarelas de Pago</span>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">📧</div>
+                    <span>Email Integration</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proceso de desarrollo -->
+        <div class="development-process">
+            <h3>Nuestro Proceso de Desarrollo</h3>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h4>Consulta Inicial</h4>
+                        <p>Analizamos tus necesidades y objetivos para crear la estrategia perfecta.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h4>Diseño & UX</h4>
+                        <p>Creamos wireframes y diseños que optimizan la experiencia del usuario.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h4>Desarrollo</h4>
+                        <p>Programamos tu sitio con HTML5, CSS3, JavaScript y PHP usando las mejores prácticas.</p>
+                    </div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <h4>Testing & Launch</h4>
+                        <p>Probamos exhaustivamente y lanzamos tu sitio con soporte completo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to action final -->
+        <div class="web-dev-cta">
+            <div class="cta-content">
+                <h3>¿Listo para llevar tu negocio online?</h3>
+                <p>Contactanos para una consulta gratuita y cotización personalizada</p>
+                <div class="cta-buttons">
+                    <button class="primary-cta-btn" onclick="sendWhatsAppMessage('consulta-web')">
+                        Consulta Gratuita por WhatsApp
+                    </button>
+                    <button class="secondary-cta-btn" onclick="document.getElementById('contacto').scrollIntoView({behavior: 'smooth'})">
+                        Formulario de Contacto
+                    </button>
+                </div>
+            </div>
+            <div class="cta-benefits">
+                <div class="benefit-item">
+                    <span class="benefit-icon">✅</span>
+                    <span>Consulta gratuita</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">⚡</span>
+                    <span>Entrega rápida</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">🛡️</span>
+                    <span>Garantía incluida</span>
+                </div>
+                <div class="benefit-item">
+                    <span class="benefit-icon">📞</span>
+                    <span>Soporte continuo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================
          SECCIÓN PORTFOLIO ORGANIZADA POR SECTORES
          ================================ -->
 <section id="portfolio">
@@ -977,753 +1816,6 @@
             </div>     
             </section>
 
-    <section id="clientes" class="clients-section">
-        <div class="container">
-            <h2>Nuestros Clientes</h2>
-            <div class="clients-carousel-container">
-                <div class="clients-carousel">
-                    <div class="client-logo">
-                        <img src="Img/Clientes/1.png" alt="Komilona" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/2.png" alt="Amar" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/3.png" alt="Almarios" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/4.png" alt="Dental Flap" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/5.png" alt="P&J Abogados" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/6.png" alt="Entre-Metros" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/7.png" alt="El Galapago" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/8.png" alt="El Galapago Estacion" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/9.png" alt="El molcajete" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/10.png" alt="FisioActivity Sabana" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/11.jpeg" alt="Sika Center" class="client-logo-image">
-                    </div>
-                    
-                    <!-- Duplicados para efecto de loop infinito -->
-                    <div class="client-logo">
-                        <img src="Img/Clientes/1.png" alt="Komilona" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/2.png" alt="Amar" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/3.png" alt="Almarios" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/4.png" alt="Dental Flap" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/5.png" alt="P&J Abogados" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/6.png" alt="Entre-Metros" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/7.png" alt="El Galapago" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/8.png" alt="El Galapago Estacion" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/9.png" alt="El molcajete" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/10.png" alt="FisioActivity Sabana" class="client-logo-image">
-                    </div>
-                    <div class="client-logo">
-                        <img src="Img/Clientes/11.jpeg" alt="Sika Center" class="client-logo-image">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="servicios" class="services-section">
-        <div class="container">
-            <h2>Nuestros Servicios</h2>
-            <div class="services-intro">
-                <p>En el mundo digital actual, tu presencia online determina el éxito de tu negocio. Nos especializamos en crear estrategias digitales integrales que no solo aumentan tu visibilidad, sino que generan resultados reales y medibles para tu empresa.</p>
-            </div>
-            
-            <div class="services-grid">
-                <div class="service-card" data-service="social-media">
-                    <div class="service-background" style="background-image: url('Img/gestion.jpeg')"></div>
-                    <div class="service-overlay"></div>
-                    <div class="service-title">
-                        <h3>Gestión Profesional de Redes Sociales</h3>
-                    </div>
-                    <div class="service-description">
-                        <p>Creamos y ejecutamos estrategias de contenido que conectan emocionalmente con tu audiencia, aumentando el engagement y convirtiendo seguidores en clientes reales.</p>
-                    </div>
-                </div>
-
-                <div class="service-card" data-service="digital-strategy">
-                    <div class="service-background" style="background-image: url('Img/estrategia.jpeg')"></div>
-                    <div class="service-overlay"></div>
-                    <div class="service-title">
-                        <h3>Estrategia Digital Personalizada</h3>
-                    </div>
-                    <div class="service-description">
-                        <p>Desarrollamos planes específicos para tu industria y objetivos, utilizando análisis de competencia y estudios de mercado para posicionarte como líder en tu sector.</p>
-                    </div>
-                </div>
-
-                <div class="service-card" data-service="growth">
-                    <div class="service-background" style="background-image: url('Img/crecimiento.jpeg')"></div>
-                    <div class="service-overlay"></div>
-                    <div class="service-title">
-                        <h3>Crecimiento Medible y Sostenible</h3>
-                    </div>
-                    <div class="service-description">
-                        <p>Implementamos métricas y KPIs que demuestran el retorno de inversión de cada acción digital, garantizando un crecimiento constante de tu marca.</p>
-                    </div>
-                </div>
-
-                <div class="service-card" data-service="digital-presence">
-                    <div class="service-background" style="background-image: url('Img/redes.jpeg')"></div>
-                    <div class="service-overlay"></div>
-                    <div class="service-title">
-                        <h3>Presencia Digital Completa</h3>
-                    </div>
-                    <div class="service-description">
-                        <p>Desde redes sociales hasta desarrollo web, creamos un ecosistema digital cohesivo que fortalece tu marca en todos los puntos de contacto con tus clientes.</p>
-                    </div>
-                </div>
-
-                <div class="service-card" data-service="support">
-                    <div class="service-background" style="background-image: url('Img/acompañamiento.jpeg')"></div>
-                    <div class="service-overlay"></div>
-                    <div class="service-title">
-                        <h3>Acompañamiento Profesional</h3>
-                    </div>
-                    <div class="service-description">
-                        <p>Contarás con un equipo que te acompaña de forma cercana y constante, comunicándose contigo regularmente y brindando seguimiento semanal a los contenidos y estrategias.</p>
-                    </div>
-                </div>
-
-                <div class="service-card" data-service="analysis">
-                    <div class="service-background" style="background-image: url('Img/analisis.jpeg')"></div>
-                    <div class="service-overlay"></div>
-                    <div class="service-title">
-                        <h3>Análisis y Optimización Continua</h3>
-                    </div>
-                    <div class="service-description">
-                        <p>Realizamos revisiones mensuales de tu competencia para identificar oportunidades de mejora y diferenciación, ajustando estrategias basadas en resultados reales.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="paquetes">
-        <div class="container">
-            <h2>Paquetes Community Manager</h2>
-            <div class="packages-grid">
-                <div class="package-card">
-                    <h3 class="package-title">Plan Básico</h3>
-                    <ul class="package-features">
-                        <li>Redes: Instagram</li>
-                        <li>Identidad visual</li>
-                        <li>1 grabación de contenido mensual</li>
-                        <li>Creación de estrategia, auditoría inicial y planificación</li>
-                        <li>Creación buyer persona</li>
-                        <li>8 posts al mes (incluyendo reels, carrusel y post)</li>
-                        <li>Textos persuasivos</li>
-                        <li>5 stories semanales</li>
-                        <li>Parrilla de contenido</li>
-                        <li>Optimización del perfil</li>
-                        <li>Portada de 5 highlights</li>
-                        <li>Textos persuasivos</li>
-                        <li>Buyer persona</li>
-                    </ul>
-                    <a href="#contacto" class="cta-button">Elegir Plan</a>
-                </div>
-
-                <div class="package-card">
-                    <h3 class="package-title">Plan Medio</h3>
-                    <ul class="package-features">
-                        <li>Redes: Instagram y Facebook</li>
-                        <li>Optimización de página de Facebook</li>
-                        <li>Identidad visual</li>
-                        <li>2 grabaciones de contenido mensual</li>
-                        <li>Creación de estrategia, auditoría inicial y planificación</li>
-                        <li>Creación buyer persona</li>
-                        <li>10 posts al mes (incluyendo reels, carrusel y post)</li>
-                        <li>Textos persuasivos</li>
-                        <li>8 stories semanales</li>
-                        <li>Gestión activa a comentarios</li>
-                        <li>Parrilla de contenido</li>
-                        <li>Link del perfil y 5 highlights</li>
-                        <li>Optimización del perfil</li>
-                    </ul>
-                    <a href="#contacto" class="cta-button">Elegir Plan</a>
-                </div>
-
-                <div class="package-card featured">
-                    <h3 class="package-title">Plan Completo</h3>
-                    <ul class="package-features">
-                        <li>Redes: Instagram y Facebook</li>
-                        <li>Optimización de página de Facebook</li>
-                        <li>Identidad visual</li>
-                        <li>Grabación de contenido semanal</li>
-                        <li>Análisis de competencia, creación de estrategia, auditoría inicial y planificación</li>
-                        <li>Creación buyer persona</li>
-                        <li>14 posts al mes (incluyendo reels, carrusel y post)</li>
-                        <li>12 stories semanales</li>
-                        <li>Gestión activa a comentarios, textos persuasivos y chats</li>
-                        <li>Parrilla de contenido</li>
-                        <li>Link del perfil y 7 highlights</li>
-                        <li>Optimización del perfil</li>
-                        <li>Estrategia para fechas especiales</li>
-                    </ul>
-                    <a href="#contacto" class="cta-button">Elegir Plan</a>
-                </div>
-
-                <div class="package-card">
-                    <h3 class="package-title">Plan TikTok</h3>
-                    <ul class="package-features">
-                        <li>Creación u optimización de perfil</li>
-                        <li>Creación de estrategia, auditoría inicial y planificación</li>
-                        <li>Desde 8 videos mensuales</li>
-                        <li>Textos persuasivos</li>
-                        <li>Parrilla de contenido</li>
-                        <li>Link del perfil</li>
-                        <li>Respuesta a comentarios</li>
-                        <li>Creación y edición de contenido</li>
-                    </ul>
-                    <a href="#contacto" class="cta-button">Elegir Plan</a>
-                </div>
-            </div>
-
-            <div class="additional-services-section">
-    <h3>Servicios Adicionales Disponibles</h3>
-    <div class="additional-services-grid">
-
-        <div class="additional-service-card">
-            <div class="service-icon">
-                <h4>Branding e Identidad</h4>
-            </div>
-            <div class="service-content">
-                <p>Creación de nombre, concepto, tono y personalidad de marca. Diseño de identidad visual completa (logo, colores, tipografías)</p>
-                <div class="price-section">
-                    <div class="service-price">
-                        <span class="pricing-note">Proyecto completo</span>
-                    </div>
-                </div>
-            </div>
-            <div class="service-overlay">
-                <p>✓ Investigación de mercado<br>✓ Naming profesional<br>✓ Manual de marca<br>✓ Aplicaciones digitales</p>
-                <button class="service-cta">Cotizar Ahora</button>
-            </div>
-        </div>
-
-        <div class="additional-service-card">
-            <div class="service-icon">
-                <h4>WhatsApp Business PRO</h4>
-            </div>
-            <div class="service-content">
-                <p>Configuración profesional y optimización completa para maximizar la comunicación con tus clientes</p>
-                <div class="price-section">
-                    <div class="service-price">
-                        <span class="pricing-note">Configuración única</span>
-                    </div>
-                </div>
-            </div>
-            <div class="service-overlay">
-                <p>✓ Catálogo optimizado<br>✓ Respuestas automáticas<br>✓ Etiquetas y organización<br>✓ Integración con CRM</p>
-                <button class="service-cta">Más Información</button>
-            </div>
-        </div>
-
-        <div class="additional-service-card">
-            <div class="service-icon">
-                <h4>YouTube Shorts</h4>
-            </div>
-            <div class="service-content">
-                <p>Producción y gestión de contenido vertical optimizado para alcance viral</p>
-                <div class="price-section">
-                    <div class="service-price">
-                        <span class="pricing-note">por mes</span>
-                    </div>
-                </div>
-            </div>
-            <div class="service-overlay">
-                <p>✓ 8-12 videos mensuales<br>✓ Edición profesional<br>✓ Optimización SEO<br>✓ Análisis de rendimiento</p>
-                <button class="service-cta">Empezar</button>
-            </div>
-        </div>
-
-        <div class="additional-service-card">
-            <div class="service-icon">
-                <h4>Google Mi Negocio</h4>
-            </div>
-            <div class="service-content">
-                <p>Configuración y optimización para búsquedas locales y mayor visibilidad</p>
-                <div class="price-section">
-                    <div class="service-price">
-                        <span class="pricing-note">Setup completo</span>
-                    </div>
-                </div>
-            </div>
-            <div class="service-overlay">
-                <p>✓ Optimización de perfil<br>✓ Gestión de reseñas<br>✓ Posts regulares<br>✓ Reportes mensuales</p>
-                <button class="service-cta">Comenzar</button>
-            </div>
-        </div>
-
-        <div class="additional-service-card">
-            <div class="service-icon">
-                <h4>Meta Ads Management</h4>
-            </div>
-            <div class="service-content">
-                <p>Gestión profesional de campañas publicitarias en Facebook e Instagram</p>
-                <div class="price-section">
-                    <div class="service-price">
-                        <span>15% del presupuesto</span>
-                        <span class="pricing-note">+ costo de pauta</span>
-                    </div>
-                </div>
-            </div>
-            <div class="service-overlay">
-                <p>✓ Estrategia publicitaria<br>✓ Diseño de anuncios<br>✓ Segmentación avanzada<br>✓ Reportes detallados</p>
-                <button class="service-cta">Consultar</button>
-            </div>
-        </div>
-
-        <div class="additional-service-card">
-            <div class="service-icon">
-                <h4>Producción Audiovisual</h4>
-            </div>
-            <div class="service-content">
-                <p>Videos corporativos, comerciales y contenido multimedia profesional</p>
-                <div class="price-section">
-                    <div class="service-price">
-                        <span class="pricing-note">por proyecto</span>
-                    </div>
-                </div>
-            </div>
-            <div class="service-overlay">
-                <p>✓ Preproducción completa<br>✓ Grabación profesional<br>✓ Edición avanzada<br>✓ Motion graphics</p>
-                <button class="service-cta">Comenzar</button>
-            </div>
-        </div>
-
-        <div class="additional-service-card premium">
-            <div class="service-icon">
-                <h4>Email Marketing</h4>
-            </div>
-            <div class="service-content">
-                <p>Campañas automatizadas y estratégicas que mantienen a tus clientes comprometidos</p>
-                <div class="price-section">
-                    <div class="service-price">
-                        <span class="pricing-note">mensual</span>
-                    </div>
-                    <div class="price-badge">POPULAR</div>
-                </div>
-            </div>
-            <div class="service-overlay">
-                <p>✓ Diseño de newsletters<br>✓ Automatizaciones<br>✓ Segmentación de listas<br>✓ Análisis de resultados</p>
-                <button class="service-cta">Empezar</button>
-            </div>
-        </div>
-
-        <div class="additional-service-card">
-            <div class="service-icon">
-                <h4>Consultoría Digital</h4>
-            </div>
-            <div class="service-content">
-                <p>Asesoría estratégica personalizada para optimizar tu presencia digital</p>
-                <div class="price-section">
-                    <div class="service-price">
-                        <span class="pricing-note">por sesión</span>
-                    </div>
-                </div>
-            </div>
-            <div class="service-overlay">
-                <p>✓ Auditoría digital<br>✓ Estrategia personalizada<br>✓ Plan de acción<br>✓ Seguimiento mensual</p>
-                <button class="service-cta">Agendar</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-            <div class="advanced-solutions-section">
-                <h3>Soluciones Digitales Avanzadas</h3>
-                <p class="advanced-intro">Llevamos tu presencia digital al siguiente nivel con tecnologías de vanguardia que destacan tu marca en el mercado competitivo actual.</p>
-                
-                <div class="advanced-services-grid">
-                    <div class="advanced-service-card" data-service="meta-ads">
-                        <div class="service-header">
-                            <div class="service-badge">META ADS</div>
-                            <h4>Gestión de Pauta Publicitaria</h4>
-                        </div>
-                        <div class="service-details">
-                            <p>Segmentación estratégica, diseño de anuncios optimizados e informes detallados de rendimiento</p>
-                            <div class="pricing-info">
-                                <span class="pricing-note">% según valor a pautar</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="advanced-service-card" data-service="design">
-                        <div class="service-header">
-                            <div class="service-badge">DISEÑO</div>
-                            <h4>Diseño de Piezas Físicas</h4>
-                        </div>
-                        <div class="service-details">
-                            <p>Volantes, menús, banners, stickers y packaging profesional para tu marca</p>
-                            <div class="pricing-info">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="advanced-service-card" data-service="3d-models">
-                        <div class="service-header">
-                            <div class="service-badge">3D</div>
-                            <h4>Modelos 3D de Productos</h4>
-                        </div>
-                        <div class="service-details">
-                            <p>Visualizaciones tridimensionales profesionales que destacan las características de tus productos</p>
-                            <div class="pricing-info">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="advanced-service-card" data-service="animations">
-                        <div class="service-header">
-                            <div class="service-badge">MOTION</div>
-                            <h4>Animaciones para Producto o Marca</h4>
-                        </div>
-                        <div class="service-details">
-                            <p>Motion graphics y animaciones que dan vida a tu marca con impacto visual extraordinario</p>
-                            <div class="pricing-info">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="advanced-service-card" data-service="renders">
-                        <div class="service-header">
-                            <div class="service-badge">RENDER</div>
-                            <h4>Renders Realistas</h4>
-                        </div>
-                        <div class="service-details">
-                            <p>Visualizaciones fotorrealistas de productos, espacios o conceptos con calidad cinematográfica</p>
-                            <div class="pricing-info">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="advanced-service-card" data-service="characters">
-                        <div class="service-header">
-                            <div class="service-badge">CHARACTER</div>
-                            <h4>Diseño de Personajes Digitales</h4>
-                        </div>
-                        <div class="service-details">
-                            <p>Creación de mascotas corporativas y personajes únicos que representen la personalidad de tu marca</p>
-                            <div class="pricing-info">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="advanced-service-card" data-service="events">
-                        <div class="service-header">
-                            <div class="service-badge">EVENTOS</div>
-                            <h4>Cubrimiento de Eventos</h4>
-                        </div>
-                        <div class="service-details">
-                            <p>Grabación y edición profesional de lanzamientos, inauguraciones y eventos comerciales</p>
-                            <div class="pricing-info">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="advanced-service-card" data-service="email-marketing">
-                        <div class="service-header">
-                            <div class="service-badge">EMAIL</div>
-                            <h4>Email Marketing</h4>
-                        </div>
-                        <div class="service-details">
-                            <p>Campañas automatizadas y estratégicas que mantienen a tus clientes comprometidos con tu marca</p>
-                            <div class="pricing-info">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="advanced-service-card" data-service="email-marketing">
-                        <div class="service-header">
-                            <div class="service-badge">GOOGLE</div>
-                            <h4>Gestión de Google Business</h4>
-                        </div>
-                        <div class="service-details">
-                            <p>Optimización completa de tu perfil para búsquedas locales. Gestión profesional de reseñas, posts regulares y estrategias para aumentar tu visibilidad en Google Maps</p>
-                            <div class="pricing-info">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ================================
-     SECCIÓN DESARROLLO WEB COMPLETA
-     ================================ -->
-
-<section id="desarrollo-web" class="web-development-section">
-    <div class="container">
-        <!-- Header de la sección -->
-        <div class="web-dev-header">
-            <h2>Desarrollo y Diseño Web</h2>
-            <p class="web-dev-subtitle">Creamos experiencias digitales que convierten visitantes en clientes. Desde landing pages hasta tiendas online completas, desarrollamos soluciones web que impulsan tu negocio.</p>
-        </div>
-
-        <!-- Opciones principales de desarrollo web -->
-        <div class="web-options-grid">
-            <!-- Opción 1: Landing Page -->
-            <div class="web-option-card featured" data-option="landing">
-                <div class="option-badge">
-                    <span class="badge-text">OPCIÓN 1</span>
-                </div>
-                <div class="option-header">
-                    <h3>Landing Page</h3>
-                    <div class="option-price">
-                    </div>
-                </div>
-                <div class="option-description">
-                    <p><strong>Sitio de una sola sección</strong> (ideal para promociones, lanzamientos, registro)</p>
-                </div>
-                <div class="option-features">
-                    <ul>
-                        <li>Diseño responsive optimizado</li>
-                        <li>Formulario de contacto integrado</li>
-                        <li>Integración con WhatsApp</li>
-                        <li>Optimización SEO básica</li>
-                        <li>Hosting incluido por 1 año</li>
-                        <li>Certificado SSL gratuito</li>
-                    </ul>
-                </div>
-                <div class="option-cta">
-                    <button class="web-option-btn" onclick="sendWhatsAppMessage('landing-page')">
-                        Solicitar Landing Page
-                    </button>
-                    <span class="delivery-time">Entrega: 7-11 días</span>
-                </div>
-            </div>
-
-            <!-- Opción 2: Sitio Web Informativo -->
-            <div class="web-option-card popular" data-option="informativo">
-                <div class="option-badge">
-                    <span class="badge-text">OPCIÓN 2</span>
-                </div>
-                <div class="popular-flag">MÁS POPULAR</div>
-                <div class="option-header">
-                    <h3>Sitio Web Informativo</h3>
-                    <div class="option-price">
-                    </div>
-                </div>
-                <div class="option-description">
-                    <p><strong>4 a 6 secciones</strong> (Inicio, Nosotros, Servicios, Contacto, Productos, Blog). Responsive (móvil y escritorio). Integración con WhatsApp</p>
-                </div>
-                <div class="option-features">
-                    <ul>
-                        <li>Hasta 6 páginas/secciones</li>
-                        <li>Panel de administración en PHP</li>
-                        <li>Blog integrado con CMS</li>
-                        <li>Galería de productos/servicios</li>
-                        <li>Formularios de contacto con PHP</li>
-                        <li>Integración redes sociales</li>
-                        <li>Google Maps integrado</li>
-                        <li>Base de datos MySQL</li>
-                        <li>Optimización SEO avanzada</li>
-                    </ul>
-                </div>
-                <div class="option-cta">
-                    <button class="web-option-btn" onclick="sendWhatsAppMessage('sitio-informativo')">
-                        Solicitar Sitio Informativo
-                    </button>
-                </div>
-            </div>
-
-            <!-- Opción 3: Tienda en Línea -->
-            <div class="web-option-card premium" data-option="tienda">
-                <div class="option-badge">
-                    <span class="badge-text">OPCIÓN 3</span>
-                </div>
-                <div class="option-header">
-                    <h3>Tienda en Línea</h3>
-                    <div class="option-price">
-                    </div>
-                </div>
-                <div class="option-description">
-                    <p><strong>Catálogo de productos, pasarela de pagos, carrito, envíos.</strong> Integración con WhatsApp y correo. Capacitación para gestión del cliente y posicionamiento SEO.</p>
-                </div>
-                <div class="option-features">
-                    <ul>
-                        <li>Catálogo de productos ilimitado</li>
-                        <li>Carrito de compras con JavaScript</li>
-                        <li>Pasarelas de pago (PSE, tarjetas)</li>
-                        <li>Sistema de inventarios en MySQL</li>
-                        <li>Gestión de pedidos con PHP</li>
-                        <li>Calculadora de envíos</li>
-                        <li>Panel administrativo completo</li>
-                        <li>Sistema de usuarios y perfiles</li>
-                        <li>Capacitación incluida</li>
-                        <li>Soporte técnico 3 meses</li>
-                    </ul>
-                </div>
-                <div class="option-cta">
-                    <button class="web-option-btn" onclick="sendWhatsAppMessage('tienda-online')">
-                        Solicitar Tienda Online
-                    </button>
-                    <span class="delivery-time">Entrega: 15-25 días</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tecnologías utilizadas -->
-        <div class="technologies-section">
-            <h3>Tecnologías que Utilizamos</h3>
-            <div class="tech-stack-grid">
-                <div class="tech-item">
-                    <div class="tech-icon">🌐</div>
-                    <span>HTML5</span>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">🎨</div>
-                    <span>CSS3</span>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">⚡</div>
-                    <span>JavaScript</span>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">🐘</div>
-                    <span>PHP</span>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">🗄️</div>
-                    <span>MySQL</span>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">💨</div>
-                    <span>Tailwind CSS</span>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">📱</div>
-                    <span>Responsive</span>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">🔒</div>
-                    <span>SSL Security</span>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">⚙️</div>
-                    <span>CMS Custom</span>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">🚀</div>
-                    <span>Optimización SEO</span>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">💳</div>
-                    <span>Pasarelas de Pago</span>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">📧</div>
-                    <span>Email Integration</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Proceso de desarrollo -->
-        <div class="development-process">
-            <h3>Nuestro Proceso de Desarrollo</h3>
-            <div class="process-steps">
-                <div class="process-step">
-                    <div class="step-number">01</div>
-                    <div class="step-content">
-                        <h4>Consulta Inicial</h4>
-                        <p>Analizamos tus necesidades y objetivos para crear la estrategia perfecta.</p>
-                    </div>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">02</div>
-                    <div class="step-content">
-                        <h4>Diseño & UX</h4>
-                        <p>Creamos wireframes y diseños que optimizan la experiencia del usuario.</p>
-                    </div>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">03</div>
-                    <div class="step-content">
-                        <h4>Desarrollo</h4>
-                        <p>Programamos tu sitio con HTML5, CSS3, JavaScript y PHP usando las mejores prácticas.</p>
-                    </div>
-                </div>
-                <div class="process-step">
-                    <div class="step-number">04</div>
-                    <div class="step-content">
-                        <h4>Testing & Launch</h4>
-                        <p>Probamos exhaustivamente y lanzamos tu sitio con soporte completo.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Call to action final -->
-        <div class="web-dev-cta">
-            <div class="cta-content">
-                <h3>¿Listo para llevar tu negocio online?</h3>
-                <p>Contactanos para una consulta gratuita y cotización personalizada</p>
-                <div class="cta-buttons">
-                    <button class="primary-cta-btn" onclick="sendWhatsAppMessage('consulta-web')">
-                        Consulta Gratuita por WhatsApp
-                    </button>
-                    <button class="secondary-cta-btn" onclick="document.getElementById('contacto').scrollIntoView({behavior: 'smooth'})">
-                        Formulario de Contacto
-                    </button>
-                </div>
-            </div>
-            <div class="cta-benefits">
-                <div class="benefit-item">
-                    <span class="benefit-icon">✅</span>
-                    <span>Consulta gratuita</span>
-                </div>
-                <div class="benefit-item">
-                    <span class="benefit-icon">⚡</span>
-                    <span>Entrega rápida</span>
-                </div>
-                <div class="benefit-item">
-                    <span class="benefit-icon">🛡️</span>
-                    <span>Garantía incluida</span>
-                </div>
-                <div class="benefit-item">
-                    <span class="benefit-icon">📞</span>
-                    <span>Soporte continuo</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
     <!-- ================================
      SECCIÓN CONTACTO - HTML CORREGIDO
      ================================ -->
@@ -1820,6 +1912,12 @@
             <p>Transformando marcas a través de estrategias digitales innovadoras</p>
         </div>
     </footer>
+
+    <div class="scroll-to-top" id="scrollToTop">
+    <svg class="scroll-to-top-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L7 7h3v10h4V7h3l-5-5z"/>
+    </svg>
+</div>
 
     <script src="script.js"></script>
     <script src="whatsapp.js"></script>
