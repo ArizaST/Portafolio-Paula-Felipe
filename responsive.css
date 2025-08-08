@@ -376,10 +376,6 @@
         min-height: auto;
     }
     
-    .option-header {
-        padding: 2rem 1.5rem 1rem 1.5rem;
-    }
-    
     .option-header h3 {
         font-size: 1.5rem;
     }
@@ -685,10 +681,6 @@
     
     .web-dev-header h2 {
         font-size: 1.8rem;
-    }
-    
-    .option-header {
-        padding: 1.5rem 1rem 1rem 1rem;
     }
     
     .option-description,
