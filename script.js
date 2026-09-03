@@ -1,1419 +1,583 @@
-// ================================
-// SCRIPT PRINCIPAL
-// ================================
+/* ================================================================
+   FELIPE MORA & PAULA SANCHEZ — SCRIPT PRINCIPAL
+   Sin emojis: los estados de los reels usan iconos SVG del sprite.
+   ================================================================ */
 
-console.log('🚀 Inicializando Portfolio Completo...');
+(function () {
+  'use strict';
 
-// ================================
-// FIX SCROLL AUTOMÁTICO
-// ================================
-function forceScrollTop() {
-    window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-}
+  const WHATSAPP_NUMBER = '573195499887';
+  const MOBILE_BREAKPOINT = 1060;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canReveal = !prefersReducedMotion && 'IntersectionObserver' in window;
 
-// Ejecutar inmediatamente
-forceScrollTop();
+  // Se marca aquí y no en init para que no haya parpadeo antes del primer pintado
+  if (canReveal) document.documentElement.classList.add('js-reveal');
 
-// Prevenir scroll durante carga
-let isPageLoaded = false;
-window.addEventListener('scroll', function() {
-    if (!isPageLoaded) {
-        forceScrollTop();
-    }
-});
+  document.addEventListener('DOMContentLoaded', init);
 
-// Marcar como cargado después de 3 segundos
-setTimeout(() => {
-    isPageLoaded = true;
-    document.body.classList.remove('page-loading');
-}, 3000);
+  function init() {
+    initWhatsApp();
+    initPortfolioFilters();
+    initVeroGallery();
+    initReels();
+    initMobileNavigation();
+    initClientsCarousel();
+    initSmoothScrolling();
+    initContactForm();
+    initRevealOnScroll();
+    initFooterYear();
+  }
 
-// ================================
-// SISTEMA DE FILTROS DE PORTAFOLIO
-// ================================
+  /* ================================
+     REVELADO AL HACER SCROLL
+     ================================ */
+  function initRevealOnScroll() {
+    if (!canReveal) return;
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎯 Inicializando filtros de portafolio...');
-    
-    // ================================
-    // ELEMENTOS DEL DOM
-    // ================================
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    const SELECTORS = [
+      '.sec-head', '.case-study', '.included-band', '.service-card', '.faq',
+      '.package-card', '.additional-service-card', '.sector-title',
+      '.portfolio-card', '.reel-portfolio-card', '.cta-band',
+      '.web-option-card', '.web-dev-cta', '.tl-step', '.team-card',
+      '.form-copy', '.form-card'
+    ];
+
+    const items = Array.from(document.querySelectorAll(SELECTORS.join(',')));
+    if (!items.length) return;
+
+    items.forEach(el => el.classList.add('reveal'));
+
+    // Escalonado dentro de cada grilla: cada hermano entra 80 ms después
+    const GROUPS = '.grid-services, .packages-grid, .additional-services-grid, .web-options-grid, .timeline, .team-grid, .portfolio-grid';
+    document.querySelectorAll(GROUPS).forEach(group => {
+      Array.from(group.children)
+        .filter(child => child.classList.contains('reveal'))
+        .forEach((child, index) => {
+          child.dataset.revealDelay = Math.min(index, 5) * 80;
+        });
+    });
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const delay = Number(el.dataset.revealDelay || 0);
+
+        el.style.transitionDelay = delay + 'ms';
+        el.classList.add('is-visible');
+        obs.unobserve(el);
+
+        // Al terminar se quitan las clases para no dejar transiciones
+        // colgadas que hagan lento el hover de las tarjetas
+        setTimeout(() => {
+          el.classList.remove('reveal', 'is-visible');
+          el.style.transitionDelay = '';
+          delete el.dataset.revealDelay;
+        }, 600 + delay);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    items.forEach(el => observer.observe(el));
+  }
+
+  /* ================================
+     WHATSAPP
+     ================================ */
+  const WHATSAPP_MESSAGES = {
+    'plan-esencial': 'Hola, me interesa el Plan Esencial de community management.',
+    'plan-crecimiento': 'Hola, me interesa el Plan Crecimiento de community management.',
+    'plan-completo': 'Hola, me interesa el Plan Completo de community management.',
+    'plataformas-adicionales': 'Hola, me interesa sumar gestión de TikTok o LinkedIn a un plan.',
+    'presencia-web': 'Hola, me interesa el servicio de presencia digital y web.',
+    'seo': 'Hola, me interesa el servicio de SEO y Google Business Profile.',
+    'whatsapp-business': 'Hola, me interesa la configuración de WhatsApp Business.',
+    'growth-pauta': 'Hola, me interesa el servicio de growth y pauta.',
+    'branding': 'Hola, me interesa el servicio de branding e identidad visual.',
+    'produccion-contenido': 'Hola, me interesa el servicio de producción de contenido.',
+    'landing-page': 'Hola, me interesa una landing page.',
+    'sitio-informativo': 'Hola, me interesa un sitio web informativo.',
+    'tienda-online': 'Hola, me interesa una tienda en línea.',
+    'consulta-web': 'Hola, me gustaría una consulta gratuita sobre desarrollo web.',
+    'consulta-general': 'Hola, me interesa conocer más sobre sus servicios de community management.'
+  };
+
+  function sendWhatsAppMessage(type) {
+    const message = WHATSAPP_MESSAGES[type] || WHATSAPP_MESSAGES['consulta-general'];
+    const url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  function initWhatsApp() {
+    // Cualquier elemento con data-wa abre WhatsApp con su mensaje
+    document.addEventListener('click', function (e) {
+      const trigger = e.target.closest('[data-wa]');
+      if (!trigger) return;
+      e.preventDefault();
+      sendWhatsAppMessage(trigger.getAttribute('data-wa'));
+    });
+
+    const float = document.getElementById('whatsappFloat');
+    if (!float) return;
+
+    const toggleFloat = () => {
+      float.classList.toggle('is-visible', window.pageYOffset > 300);
+    };
+    window.addEventListener('scroll', toggleFloat, { passive: true });
+    toggleFloat();
+
+    // Compatibilidad con llamadas antiguas desde el HTML
+    window.sendWhatsAppMessage = sendWhatsAppMessage;
+    window.sendWhatsAppDirect = () => sendWhatsAppMessage('consulta-general');
+  }
+
+  /* ================================
+     FILTROS DE PORTAFOLIO
+     ================================ */
+  function initPortfolioFilters() {
+    const filterButtons = Array.from(document.querySelectorAll('.filter-btn'));
+    const portfolioItems = Array.from(document.querySelectorAll('.portfolio-item'));
+    const sectorSections = Array.from(document.querySelectorAll('.sector-section'));
     const resultsCounter = document.getElementById('resultsCounter');
     const visibleCount = document.getElementById('visibleCount');
     const totalCount = document.getElementById('totalCount');
     const noResults = document.getElementById('noResults');
-    
-    if (!filterButtons.length || !portfolioItems.length) {
-        console.warn('⚠️ No se encontraron elementos de filtro o proyectos');
-        // Continuar con otras inicializaciones
-        initializeOtherFeatures();
-        return;
-    }
-    
-    // Configurar contador inicial
+
+    if (!filterButtons.length || !portfolioItems.length) return;
+
     if (totalCount) totalCount.textContent = portfolioItems.length;
-    if (visibleCount) visibleCount.textContent = portfolioItems.length;
-    
-    // ================================
-    // FUNCIÓN PRINCIPAL DE FILTRADO
-    // ================================
-    
-    function filterProjects(sector) {
-        let visibleItems = 0;
-        
-        // Filtrar títulos de sectores
-        const sectorTitles = document.querySelectorAll('.sector-title, .sector-section');
-        sectorTitles.forEach(title => {
-            const titleElement = title.classList.contains('sector-title') ? title : title.querySelector('.sector-title');
-            if (!titleElement) return;
-            
-            // Determinar el sector del título basado en las clases CSS
-            let titleSector = '';
-            if (titleElement.classList.contains('sector-juridico')) titleSector = 'juridico';
-            else if (titleElement.classList.contains('sector-belleza')) titleSector = 'belleza';
-            else if (titleElement.classList.contains('sector-restaurantes')) titleSector = 'restaurantes';
-            else if (titleElement.classList.contains('sector-salud')) titleSector = 'salud';
-            else if (titleElement.classList.contains('sector-inmobiliario')) titleSector = 'inmobiliario';
-            
-            const shouldShowTitle = sector === 'all' || titleSector === sector;
-            
-            if (shouldShowTitle) {
-                title.style.display = 'block';
-                title.style.opacity = '1';
-                title.style.transform = 'translateY(0)';
-            } else {
-                title.style.display = 'none';
-                title.style.opacity = '0';
-                title.style.transform = 'translateY(-20px)';
-            }
-        });
-        
-        // Filtrar proyectos
-        portfolioItems.forEach((item, index) => {
-            const itemSector = item.getAttribute('data-sector');
-            const shouldShow = sector === 'all' || itemSector === sector;
-            
-            if (shouldShow) {
-                // Mostrar item
-                item.classList.remove('hidden');
-                visibleItems++;
-                
-                // Animación de entrada escalonada
-                setTimeout(() => {
-                    item.style.opacity = '1';
-                    item.style.transform = 'scale(1)';
-                    item.style.pointerEvents = 'auto';
-                }, index * 50);
-            } else {
-                // Ocultar item
-                item.classList.add('hidden');
-                item.style.opacity = '0';
-                item.style.transform = 'scale(0.8)';
-                item.style.pointerEvents = 'none';
-            }
-        });
-        
-        // Actualizar contador
-        if (visibleCount) visibleCount.textContent = visibleItems;
-        
-        // Mostrar/ocultar mensaje de no resultados
-        if (visibleItems === 0) {
-            if (noResults) noResults.classList.add('show');
-            if (resultsCounter) resultsCounter.classList.add('hide');
-        } else {
-            if (noResults) noResults.classList.remove('show');
-            if (resultsCounter) resultsCounter.classList.remove('hide');
-        }
-        
-        console.log(`🎯 Filtro aplicado: ${sector} - ${visibleItems} proyectos visibles`);
-        
-        // Scroll suave al inicio del portafolio después del filtrado
-        setTimeout(() => {
-            const portfolioSection = document.getElementById('portfolio');
-            if (portfolioSection && sector !== 'all') {
-                portfolioSection.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start' 
-                });
-            }
-        }, 300);
+
+    function sectorOf(section) {
+      const title = section.querySelector('.sector-title');
+      if (!title) return '';
+      const match = Array.from(title.classList).find(c => c.indexOf('sector-') === 0 && c !== 'sector-title');
+      return match ? match.replace('sector-', '') : '';
     }
-    
-    // ================================
-    // EVENT LISTENERS PARA BOTONES
-    // ================================
-    
+
+    function filterProjects(sector, scroll) {
+      let visible = 0;
+
+      sectorSections.forEach(section => {
+        section.classList.toggle('hidden', sectorOf(section) !== sector);
+      });
+
+      portfolioItems.forEach(item => {
+        const show = item.getAttribute('data-sector') === sector;
+        item.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+
+      if (visibleCount) visibleCount.textContent = visible;
+      if (noResults) noResults.classList.toggle('show', visible === 0);
+      if (resultsCounter) resultsCounter.classList.toggle('hide', visible === 0);
+
+      if (scroll) {
+        const portfolio = document.getElementById('portfolio');
+        if (portfolio) portfolio.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+      }
+    }
+
     filterButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Prevenir doble click
-            if (this.classList.contains('active')) {
-                return;
-            }
-            
-            // Remover clase active de todos los botones
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Agregar clase active al botón clickeado
-            this.classList.add('active');
-            
-            // Obtener el filtro seleccionado
-            const selectedFilter = this.getAttribute('data-filter');
-            
-            // Aplicar filtro con pequeño delay para mejor UX
-            setTimeout(() => {
-                filterProjects(selectedFilter);
-            }, 100);
-            
-            // Analytics opcional
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'portfolio_filter', {
-                    event_category: 'Portfolio',
-                    event_label: selectedFilter
-                });
-            }
-            
-            console.log(`🎯 Filtro seleccionado: ${selectedFilter}`);
+      button.addEventListener('click', function () {
+        if (this.classList.contains('active')) return;
+
+        filterButtons.forEach(btn => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-pressed', 'false');
         });
+        this.classList.add('active');
+        this.setAttribute('aria-pressed', 'true');
+
+        const selected = this.getAttribute('data-filter');
+        filterProjects(selected, true);
+
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'portfolio_filter', { event_category: 'Portfolio', event_label: selected });
+        }
+      });
     });
-    
-    // ================================
-    // INICIALIZACIÓN SIN "TODOS"
-    // ================================
-    
-    // Mostrar primer sector por defecto si no hay "all"
-    const firstSectorBtn = document.querySelector('.filter-btn:not([data-filter="all"])');
-    if (firstSectorBtn && !document.querySelector('.filter-btn.active')) {
-        firstSectorBtn.classList.add('active');
-        const firstSector = firstSectorBtn.getAttribute('data-filter');
-        setTimeout(() => {
-            filterProjects(firstSector);
-        }, 500);
-    }
-    
-    // ================================
-    // FUNCIONES AUXILIARES
-    // ================================
-    
-    // Función para contar proyectos por sector
-    function getSectorStats() {
-        const stats = {
-            all: portfolioItems.length,
-            juridico: 0,
-            belleza: 0,
-            restaurantes: 0,
-            salud: 0,
-            inmobiliario: 0
-        };
-        
-        portfolioItems.forEach(item => {
-            const sector = item.getAttribute('data-sector');
-            if (stats.hasOwnProperty(sector)) {
-                stats[sector]++;
-            }
-        });
-        
-        return stats;
-    }
-    
-    // Función para resetear todos los filtros (ahora al primer sector)
-    function resetFilters() {
-        // Mostrar todos los títulos y proyectos primero
-        const sectorTitles = document.querySelectorAll('.sector-title, .sector-section');
-        sectorTitles.forEach(title => {
-            title.style.display = 'block';
-            title.style.opacity = '1';
-            title.style.transform = 'translateY(0)';
-        });
-        
-        portfolioItems.forEach(item => {
-            item.classList.remove('hidden');
-            item.style.opacity = '1';
-            item.style.transform = 'scale(1)';
-            item.style.pointerEvents = 'auto';
-        });
-        
-        // Resetear botones y activar el primero
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        const firstBtn = document.querySelector('.filter-btn:not([data-filter="all"])');
-        if (firstBtn) {
-            firstBtn.classList.add('active');
-            const firstSector = firstBtn.getAttribute('data-filter');
-            setTimeout(() => filterProjects(firstSector), 100);
-        }
-        
-        console.log('🔄 Filtros reseteados - mostrando primer sector');
-    }
-    
-    // ================================
-    // API PÚBLICA DE FILTROS
-    // ================================
-    
-    window.portfolioFilters = {
-        // Funciones principales
-        filterProjects: filterProjects,
-        resetFilters: resetFilters,
-        getSectorStats: getSectorStats,
-        
-        // Atajos por sector (sin showAll)
-        showJuridico: () => {
-            document.querySelector('.filter-btn[data-filter="juridico"]')?.click();
-        },
-        showBelleza: () => {
-            document.querySelector('.filter-btn[data-filter="belleza"]')?.click();
-        },
-        showRestaurantes: () => {
-            document.querySelector('.filter-btn[data-filter="restaurantes"]')?.click();
-        },
-        showSalud: () => {
-            document.querySelector('.filter-btn[data-filter="salud"]')?.click();
-        },
-        showInmobiliario: () => {
-            document.querySelector('.filter-btn[data-filter="inmobiliario"]')?.click();
-        },
-        
-        // Funciones de utilidad
-        getVisibleCount: () => {
-            return document.querySelectorAll('.portfolio-item:not(.hidden)').length;
-        },
-        getTotalCount: () => portfolioItems.length,
-        getCurrentFilter: () => {
-            const activeBtn = document.querySelector('.filter-btn.active');
-            return activeBtn ? activeBtn.getAttribute('data-filter') : 'juridico'; // Default al primero
-        },
-        
-        // Función para mostrar todos (si se necesita programáticamente)
-        showAllSectors: () => {
-            // Resetear y mostrar todo temporalmente
-            const sectorTitles = document.querySelectorAll('.sector-title, .sector-section');
-            sectorTitles.forEach(title => {
-                title.style.display = 'block';
-                title.style.opacity = '1';
-                title.style.transform = 'translateY(0)';
-            });
-            
-            portfolioItems.forEach(item => {
-                item.classList.remove('hidden');
-                item.style.opacity = '1';
-                item.style.transform = 'scale(1)';
-                item.style.pointerEvents = 'auto';
-            });
-            
-            if (visibleCount) visibleCount.textContent = portfolioItems.length;
-            console.log('👁️ Mostrando todos los sectores temporalmente');
-        }
-    };
-    
-    // Log de estadísticas iniciales
-    const stats = getSectorStats();
-    console.log('📊 Estadísticas del portafolio:', stats);
-    
-    console.log('✅ Sistema de filtros inicializado correctamente');
-    
-    // Continuar con otras inicializaciones
-    initializeOtherFeatures();
-});
 
-// ================================
-// OTRAS FUNCIONALIDADES DEL PORTFOLIO
-// ================================
+    // Estado inicial: primer sector
+    const first = filterButtons[0];
+    first.classList.add('active');
+    first.setAttribute('aria-pressed', 'true');
+    filterProjects(first.getAttribute('data-filter'), false);
+  }
 
-function initializeOtherFeatures() {
-    console.log('🔧 Inicializando otras funcionalidades...');
-    
-    // Inicializar galería Veró
-    initializeVeroGallery();
-    
-    // Inicializar reels
-    initializeReelsSystem();
-    
-    // Inicializar video de fondo
-    initializeHeroVideo();
-    
-    // Inicializar navegación móvil
-    initializeMobileNavigation();
-    
-    // Inicializar WhatsApp
-    initializeWhatsApp();
-    
-    // Inicializar carrusel de clientes
-    initializeClientsCarousel();
-    
-    // Smooth scrolling
-    initializeSmoothScrolling();
+  /* ================================
+     GALERÍA VERÓ
+     ================================ */
+  function initVeroGallery() {
+    const mainImage = document.getElementById('veroMainImage');
+    const thumbsWrap = document.getElementById('veroThumbnails');
+    const counter = document.getElementById('veroCounter');
+    if (!mainImage || !thumbsWrap) return;
 
-    initializeScrollToTop();
-    
-    console.log('✅ Todas las funcionalidades inicializadas');
-}
+    const thumbs = Array.from(thumbsWrap.querySelectorAll('.thumbnail'));
 
-// ================================
-// SISTEMA DE REELS
-// ================================
-
-function initializeReelsSystem() {
-    console.log('🎬 Inicializando sistema de reels...');
-    
-    const reelContainers = document.querySelectorAll('.reel-video-container');
-    console.log(`🎯 Encontrados ${reelContainers.length} reels`);
-    
-    if (reelContainers.length === 0) {
-        console.log('ℹ️ No se encontraron reels');
-        return;
-    }
-    
-    let activeVideo = null;
-    
-    reelContainers.forEach((container, index) => {
-        setupSingleReel(container, index);
+    thumbs.forEach((thumb, index) => {
+      thumb.addEventListener('click', () => {
+        mainImage.src = thumb.getAttribute('data-src');
+        mainImage.alt = thumb.getAttribute('data-alt') || '';
+        if (counter) counter.textContent = (index + 1) + ' / ' + thumbs.length;
+        thumbs.forEach(t => t.classList.remove('is-active'));
+        thumb.classList.add('is-active');
+      });
     });
-    
-    function setupSingleReel(container, index) {
-        const video = container.querySelector('.reel-video');
-        const overlay = container.querySelector('.reel-overlay');
-        const playButton = container.querySelector('.reel-play-button');
-        const progressBar = container.querySelector('.reel-progress-bar');
-        const progress = container.querySelector('.reel-progress');
-        const volumeBtn = container.querySelector('.volume-btn');
-        const reelId = container.getAttribute('data-reel-id');
-        const loadingSpinner = container.querySelector('.reel-loading-spinner');
-        
-        if (!video) {
-            console.warn(`⚠️ Video no encontrado en reel ${index + 1}`);
-            return;
-        }
-        
-        console.log(`🎬 Configurando reel: ${reelId}`);
-        
-        // Play/Pause functionality
-        const toggleVideo = async () => {
-            if (video.paused) {
-                pauseAllVideos();
-                await playVideo(container, video, reelId);
-            } else {
-                pauseVideo(container, video, reelId);
-            }
-        };
-        
-        // Event listeners
-        if (overlay) {
-            overlay.addEventListener('click', toggleVideo);
-        }
-        
-        if (playButton) {
-            playButton.addEventListener('click', (e) => {
-                e.stopPropagation();
-                toggleVideo();
-            });
-        }
-        
-        // Volume control
-        if (volumeBtn) {
-            volumeBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                toggleVolume(video, volumeBtn);
-            });
-        }
-        
-        // Progress bar
-        if (progress) {
-            progress.addEventListener('click', (e) => {
-                e.stopPropagation();
-                seekVideo(e, video, progress);
-            });
-        }
-        
-        // Video events
-        video.addEventListener('loadstart', () => {
-            container.classList.add('loading');
-            if (loadingSpinner) loadingSpinner.style.display = 'block';
-        });
-        
-        video.addEventListener('canplay', () => {
-            container.classList.remove('loading');
-            if (loadingSpinner) loadingSpinner.style.display = 'none';
-        });
-        
-        video.addEventListener('timeupdate', () => {
-            updateProgress(video, progressBar);
-        });
-        
-        video.addEventListener('ended', () => {
-            container.classList.remove('playing');
-            if (playButton) playButton.innerHTML = '▶';
-            activeVideo = null;
-            console.log(`🏁 Reel terminado: ${reelId}`);
-        });
-        
-        video.addEventListener('error', (e) => {
-            console.error(`❌ Error en reel ${reelId}:`, e);
-            container.classList.remove('loading');
-            if (loadingSpinner) loadingSpinner.style.display = 'none';
-            if (playButton) {
-                playButton.innerHTML = '❌';
-                setTimeout(() => {
-                    playButton.innerHTML = '▶';
-                }, 3000);
-            }
-        });
-        
-        console.log(`✅ Reel configurado: ${reelId}`);
-    }
-    
-    async function playVideo(container, video, reelId) {
-        try {
-            container.classList.add('loading');
-            
-            // Intentar reproducir con audio desde el inicio
-            video.muted = false;
-            await video.play();
-            
-            container.classList.remove('loading');
-            container.classList.add('playing');
-            
-            const playButton = container.querySelector('.reel-play-button');
-            if (playButton) playButton.innerHTML = '⏸';
-            
-            const volumeBtn = container.querySelector('.volume-btn');
-            if (volumeBtn) volumeBtn.textContent = '🔊';
-            
-            activeVideo = video;
-            
-            console.log(`✅ Reproduciendo con audio: ${reelId}`);
-            
-        } catch (error) {
-            console.log(`⚠️ Falló con audio, intentando muted: ${reelId}`);
-            container.classList.remove('loading');
-            
-            // Fallback: intentar con muted si falla por políticas del navegador
-            if (error.name === 'NotAllowedError' || error.name === 'NotSupportedError') {
-                video.muted = true;
-                try {
-                    await video.play();
-                    container.classList.add('playing');
-                    activeVideo = video;
-                    
-                    const playButton = container.querySelector('.reel-play-button');
-                    if (playButton) playButton.innerHTML = '⏸';
-                    
-                    const volumeBtn = container.querySelector('.volume-btn');
-                    if (volumeBtn) volumeBtn.textContent = '🔇';
-                    
-                    console.log(`✅ Reproduciendo (muted): ${reelId}`);
-                    console.log(`💡 Haz click en el botón de volumen para activar audio`);
-                    
-                    // Mostrar indicador visual de que está muted
-                    showMutedIndicator(container);
-                    
-                } catch (e) {
-                    console.error(`❌ Falló completamente en ${reelId}:`, e);
-                    container.classList.remove('loading');
-                }
-            } else {
-                console.error(`❌ Error inesperado en ${reelId}:`, error);
-            }
-        }
-    }
-    
-    function showMutedIndicator(container) {
-        // Crear indicador temporal de que está muted
-        const indicator = document.createElement('div');
-        indicator.className = 'muted-indicator';
-        indicator.innerHTML = '🔇 Click para audio';
-        indicator.style.cssText = `
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            z-index: 10;
-            animation: fadeOut 3s ease forwards;
-        `;
-        
-        container.appendChild(indicator);
-        
-        // Remover después de 3 segundos
-        setTimeout(() => {
-            if (indicator.parentNode) {
-                indicator.remove();
-            }
-        }, 3000);
-        
-        // Agregar CSS para la animación
-        if (!document.getElementById('muted-indicator-styles')) {
-            const style = document.createElement('style');
-            style.id = 'muted-indicator-styles';
-            style.textContent = `
-                @keyframes fadeOut {
-                    0% { opacity: 1; }
-                    70% { opacity: 1; }
-                    100% { opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    }
-    
-    function pauseVideo(container, video, reelId) {
-        video.pause();
-        container.classList.remove('playing');
-        
-        const playButton = container.querySelector('.reel-play-button');
-        if (playButton) playButton.innerHTML = '▶';
-        
-        if (activeVideo === video) {
-            activeVideo = null;
-        }
-        
-        console.log(`⏸️ Pausado: ${reelId}`);
-    }
-    
-    function pauseAllVideos() {
-        reelContainers.forEach(container => {
-            const video = container.querySelector('.reel-video');
-            const reelId = container.getAttribute('data-reel-id');
-            
-            if (video && !video.paused) {
-                pauseVideo(container, video, reelId);
-            }
-        });
-    }
-    
-    function toggleVolume(video, button) {
-        if (video.muted) {
-            video.muted = false;
-            button.textContent = '🔊';
-            
-            // Remover indicador de muted si existe
-            const container = video.closest('.reel-video-container');
-            const mutedIndicator = container?.querySelector('.muted-indicator');
-            if (mutedIndicator) {
-                mutedIndicator.remove();
-            }
-            
-            console.log('🔊 Audio activado');
-        } else {
-            video.muted = true;
-            button.textContent = '🔇';
-            console.log('🔇 Audio silenciado');
-        }
-    }
-    
-    function seekVideo(event, video, progressContainer) {
-        const rect = progressContainer.getBoundingClientRect();
-        const clickX = event.clientX - rect.left;
-        const percentage = clickX / rect.width;
-        const newTime = percentage * video.duration;
-        
-        if (!isNaN(newTime) && isFinite(newTime)) {
-            video.currentTime = newTime;
-            console.log(`⏭️ Saltado a: ${formatTime(newTime)}`);
-        }
-    }
-    
-    function updateProgress(video, progressBar) {
-        if (!video.duration || !progressBar) return;
-        
-        const percentage = (video.currentTime / video.duration) * 100;
-        progressBar.style.width = percentage + '%';
-    }
-    
-    function formatTime(seconds) {
-        if (!isFinite(seconds) || isNaN(seconds)) return '0:00';
-        
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${mins}:${secs.toString().padStart(2, '0')}`;
-    }
-    
-    // Pausar videos cuando la página se oculta
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            pauseAllVideos();
-            console.log('⏸️ Todos los videos pausados (página oculta)');
-        }
-    });
-    
-    // Intersection Observer para pausar videos fuera de vista
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            const video = entry.target.querySelector('.reel-video');
-            const reelId = entry.target.getAttribute('data-reel-id');
-            
-            if (!entry.isIntersecting && video && !video.paused) {
-                pauseVideo(entry.target, video, reelId);
-                console.log(`⏸️ Pausado por salir de vista: ${reelId}`);
-            }
-        });
-    }, { threshold: 0.3 });
-    
-    reelContainers.forEach(container => {
-        observer.observe(container);
-    });
-    
-    // API pública para control de reels
-    window.reelsManager = {
-        pauseAll: pauseAllVideos,
-        getActive: () => activeVideo,
-        playById: (reelId) => {
-            const container = document.querySelector(`[data-reel-id="${reelId}"]`);
-            if (container) {
-                const video = container.querySelector('.reel-video');
-                if (video) {
-                    pauseAllVideos();
-                    playVideo(container, video, reelId);
-                }
-            }
-        }
-    };
-    
-    console.log('✅ Sistema de reels inicializado');
-    console.log('🎮 API disponible en window.reelsManager');
-}
+  }
 
-function initializeVeroGallery() {
-    console.log('🎨 Inicializando galería Veró...');
-    
-    const veroMainImage = document.getElementById('veroMainImage');
-    const veroThumbnails = document.querySelectorAll('#veroThumbnails .thumbnail');
-    const veroCounter = document.getElementById('veroCounter');
-    
-    if (!veroMainImage || !veroThumbnails.length || !veroCounter) {
-        console.log('ℹ️ Proyecto Veró no encontrado en esta página');
-        return;
-    }
-    
-    let currentIndex = 0;
-    
-    veroThumbnails.forEach((thumbnail, index) => {
-        thumbnail.addEventListener('click', function() {
-            currentIndex = index;
-            veroMainImage.src = thumbnail.src;
-            veroMainImage.alt = thumbnail.alt;
-            
-            // Actualizar contador
-            veroCounter.textContent = `${index + 1} / ${veroThumbnails.length}`;
-            
-            // Actualizar thumbnail activo
-            veroThumbnails.forEach(t => t.classList.remove('active'));
-            thumbnail.classList.add('active');
-        });
-    });
-    
-    console.log('✅ Galería Veró inicializada');
-}
+  /* ================================
+     REELS
+     ================================ */
+  function initReels() {
+    const containers = Array.from(document.querySelectorAll('.reel-video-container'));
+    if (!containers.length) return;
 
-// ================================
-// INICIALIZACIÓN DE VIDEO HERO
-// ================================
-
-function initializeHeroVideo() {
-    const video = document.querySelector('.hero-video');
-    const hero = document.querySelector('.hero');
-    
-    if (!video) {
-        console.log('ℹ️ Video element not found');
-        return;
+    function setIcon(svg, id) {
+      const use = svg && svg.querySelector('use');
+      if (use) use.setAttribute('href', id);
     }
 
-    function initializeVideo() {
+    function pauseReel(container) {
+      const video = container.querySelector('.reel-video');
+      if (!video) return;
+      video.pause();
+      container.classList.remove('playing');
+      setIcon(container.querySelector('.reel-play-button .icon'), '#i-play');
+    }
+
+    function pauseAll(except) {
+      containers.forEach(c => { if (c !== except) pauseReel(c); });
+    }
+
+    async function playReel(container) {
+      const video = container.querySelector('.reel-video');
+      if (!video) return;
+
+      pauseAll(container);
+      container.classList.add('loading');
+
+      try {
+        video.muted = false;
+        await video.play();
+      } catch (error) {
+        // El navegador bloquea el audio automático: reproducimos silenciado
         video.muted = true;
-        video.loop = true;
-        video.playsInline = true;
-        video.controls = false;
-        video.disablePictureInPicture = true;
-        
-        attemptAutoPlay();
-    }
-
-    async function attemptAutoPlay() {
         try {
-            await video.play();
-            console.log('✅ Video playing successfully');
-            if (hero) hero.classList.add('video-loaded');
-        } catch (error) {
-            console.log('⚠️ Autoplay failed:', error);
-            // Mostrar fallback
-            const fallback = document.querySelector('.hero-fallback');
-            if (fallback) fallback.style.display = 'block';
+          await video.play();
+          showMutedNotice(container);
+        } catch (fallbackError) {
+          container.classList.remove('loading');
+          setIcon(container.querySelector('.reel-play-button .icon'), '#i-alert');
+          return;
         }
+      }
+
+      container.classList.remove('loading');
+      container.classList.add('playing');
+      setIcon(container.querySelector('.reel-play-button .icon'), '#i-pause');
+      setIcon(container.querySelector('.volume-btn .icon'), video.muted ? '#i-sound-off' : '#i-sound-on');
     }
 
-    // Optimización para móvil
-    if (window.innerWidth <= 768) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (video.paused) video.play().catch(console.log);
-                } else {
-                    if (!video.paused) video.pause();
-                }
-            });
-        }, { threshold: 0.3 });
-        
-        observer.observe(video);
+    function showMutedNotice(container) {
+      if (container.querySelector('.muted-indicator')) return;
+      const notice = document.createElement('div');
+      notice.className = 'muted-indicator';
+      notice.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#i-sound-off"/></svg><span>Activa el sonido</span>';
+      container.appendChild(notice);
+      setTimeout(() => notice.remove(), 4000);
     }
 
-    initializeVideo();
-    console.log('✅ Hero video initialized');
-}
+    containers.forEach(container => {
+      const video = container.querySelector('.reel-video');
+      const overlay = container.querySelector('.reel-overlay');
+      const progress = container.querySelector('.reel-progress');
+      const progressBar = container.querySelector('.reel-progress-bar');
+      const volumeBtn = container.querySelector('.volume-btn');
+      if (!video) return;
 
-// ================================
-// NAVEGACIÓN MÓVIL
-// ================================
+      const toggle = () => { video.paused ? playReel(container) : pauseReel(container); };
 
-function initializeMobileNavigation() {
-    console.log('📱 Inicializando navegación móvil...');
-    
-    // Buscar o crear el botón móvil
-    let mobileToggle = document.querySelector('.mobile-nav-toggle, .mobile-menu-btn');
-    const navLinks = document.querySelector('.nav-links');
-    const nav = document.querySelector('nav');
-    const body = document.body;
-    
-    if (!navLinks) {
-        console.log('⚠️ Nav-links no encontrado');
-        return;
-    }
-    
-    // Crear botón móvil si no existe
-    if (!mobileToggle && nav) {
-        console.log('🔧 Creando botón móvil automáticamente...');
-        mobileToggle = document.createElement('button');
-        mobileToggle.className = 'mobile-nav-toggle';
-        mobileToggle.setAttribute('aria-label', 'Abrir menú de navegación');
-        mobileToggle.setAttribute('aria-expanded', 'false');
-        mobileToggle.setAttribute('type', 'button');
-        
-        mobileToggle.innerHTML = `
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-        `;
-        
-        nav.appendChild(mobileToggle);
-        console.log('✅ Botón móvil creado');
-    }
-    
-    if (!mobileToggle) {
-        console.log('❌ No se pudo crear/encontrar botón móvil');
-        return;
-    }
-    
-    let isMenuOpen = false;
-    
-    function openMenu() {
-        navLinks.classList.add('active');
-        navLinks.classList.remove('closing');
-        mobileToggle.classList.add('active');
-        mobileToggle.setAttribute('aria-expanded', 'true');
-        body.classList.add('menu-open');
-        body.style.overflow = 'hidden';
-        isMenuOpen = true;
-        console.log('📱 Menú móvil ABIERTO');
-    }
-    
-    function closeMenu() {
-        navLinks.classList.remove('active');
-        navLinks.classList.add('closing');
-        mobileToggle.classList.remove('active');
-        mobileToggle.setAttribute('aria-expanded', 'false');
-        body.classList.remove('menu-open');
-        body.style.overflow = '';
-        isMenuOpen = false;
-        
-        setTimeout(() => {
-            navLinks.classList.remove('closing');
-        }, 300);
-        
-        console.log('📱 Menú móvil CERRADO');
-    }
-    
-    function toggleMenu() {
-        if (isMenuOpen) {
-            closeMenu();
-        } else {
-            openMenu();
-        }
-    }
-    
-    // Event listener para el botón
-    mobileToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleMenu();
-    });
-    
-    // Cerrar menú al hacer click en enlaces
-    const navLinksItems = navLinks.querySelectorAll('a');
-    navLinksItems.forEach(function(link) {
-        link.addEventListener('click', function() {
-            if (window.innerWidth <= 768 && isMenuOpen) {
-                closeMenu();
-            }
+      if (overlay) {
+        overlay.setAttribute('role', 'button');
+        overlay.setAttribute('tabindex', '0');
+        overlay.setAttribute('aria-label', 'Reproducir o pausar el reel');
+        overlay.addEventListener('click', toggle);
+        overlay.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
         });
-    });
-    
-    // Cerrar menú al hacer click fuera
-    document.addEventListener('click', function(e) {
-        if (isMenuOpen && 
-            !navLinks.contains(e.target) && 
-            !mobileToggle.contains(e.target)) {
-            closeMenu();
-        }
-    });
-    
-    // Cerrar menú con Escape
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && isMenuOpen) {
-            closeMenu();
-        }
-    });
-    
-    // Cerrar menú al cambiar el tamaño de ventana
-    let resizeTimeout;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            if (window.innerWidth > 768 && isMenuOpen) {
-                closeMenu();
-            }
-        }, 250);
-    });
-    
-    // Función global para control externo
-    window.mobileMenu = {
-        open: openMenu,
-        close: closeMenu,
-        toggle: toggleMenu,
-        isOpen: () => isMenuOpen
-    };
-    
-    console.log('✅ Navegación móvil inicializada correctamente');
-}
+      }
 
-// CARRUSEL DE CLIENTES COMPLETO
-function initializeClientsCarousel() {
+      if (volumeBtn) {
+        volumeBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          video.muted = !video.muted;
+          setIcon(volumeBtn.querySelector('.icon'), video.muted ? '#i-sound-off' : '#i-sound-on');
+          const notice = container.querySelector('.muted-indicator');
+          if (notice && !video.muted) notice.remove();
+        });
+      }
+
+      if (progress) {
+        progress.addEventListener('click', e => {
+          e.stopPropagation();
+          const rect = progress.getBoundingClientRect();
+          const ratio = (e.clientX - rect.left) / rect.width;
+          const time = ratio * video.duration;
+          if (isFinite(time)) video.currentTime = time;
+        });
+      }
+
+      video.addEventListener('waiting', () => container.classList.add('loading'));
+      video.addEventListener('canplay', () => container.classList.remove('loading'));
+      video.addEventListener('timeupdate', () => {
+        if (!video.duration || !progressBar) return;
+        progressBar.style.width = ((video.currentTime / video.duration) * 100) + '%';
+      });
+      video.addEventListener('ended', () => pauseReel(container));
+      video.addEventListener('error', () => {
+        container.classList.remove('loading');
+        setIcon(container.querySelector('.reel-play-button .icon'), '#i-alert');
+      });
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) pauseAll(null);
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        const video = entry.target.querySelector('.reel-video');
+        if (!entry.isIntersecting && video && !video.paused) pauseReel(entry.target);
+      });
+    }, { threshold: 0.3 });
+
+    containers.forEach(c => observer.observe(c));
+  }
+
+  /* ================================
+     NAVEGACIÓN MÓVIL
+     ================================ */
+  function initMobileNavigation() {
+    const toggle = document.querySelector('.mobile-nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (!toggle || !navLinks) return;
+
+    let isOpen = false;
+
+    function openMenu() {
+      navLinks.classList.add('active');
+      toggle.classList.add('active');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Cerrar menú de navegación');
+      document.body.style.overflow = 'hidden';
+      isOpen = true;
+    }
+
+    function closeMenu() {
+      navLinks.classList.remove('active');
+      toggle.classList.remove('active');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Abrir menú de navegación');
+      document.body.style.overflow = '';
+      isOpen = false;
+    }
+
+    toggle.addEventListener('click', e => {
+      e.stopPropagation();
+      isOpen ? closeMenu() : openMenu();
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => { if (isOpen) closeMenu(); });
+    });
+
+    document.addEventListener('click', e => {
+      if (isOpen && !navLinks.contains(e.target) && !toggle.contains(e.target)) closeMenu();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && isOpen) { closeMenu(); toggle.focus(); }
+    });
+
+    window.addEventListener('resize', debounce(() => {
+      if (window.innerWidth > MOBILE_BREAKPOINT && isOpen) closeMenu();
+    }, 200));
+  }
+
+  /* ================================
+     CARRUSEL DE CLIENTES
+     ================================ */
+  function initClientsCarousel() {
     const carousel = document.querySelector('.clients-carousel');
     const container = document.querySelector('.clients-carousel-container');
-    
-    if (!carousel || !container) {
-        console.log('⚠️ Carrusel de clientes no encontrado');
-        return;
-    }
+    if (!carousel || !container) return;
 
-    let isHovered = false;
-    let isDragging = false;
+    let offset = 0;
+    let speed = 1;
+    let paused = false;
+    let dragging = false;
     let startX = 0;
-    let scrollLeft = 0;
-    let animationId = null;
-    let currentTransform = 0;
-    let autoScrollSpeed = 1;
-    let isAutoScrollPaused = false;
+    let startOffset = 0;
+    let frameId = null;
 
-    function initializeCarousel() {
-        container.style.cssText += `
-            cursor: grab;
-            user-select: none;
-            overflow: hidden;
-            position: relative;
-        `;
-
-        carousel.style.cssText += `
-            display: flex;
-            will-change: transform;
-            transition: none;
-        `;
-
-        startAutoScroll();
-        console.log('✅ Carrusel de clientes inicializado');
+    function adjustSpeed() {
+      const w = window.innerWidth;
+      speed = w < 768 ? 0.7 : (w < 1024 ? 0.8 : 1);
     }
 
-    function startAutoScroll() {
-        function animate() {
-            if (!isAutoScrollPaused && !isDragging && !isHovered) {
-                currentTransform -= autoScrollSpeed;
-                
-                const carouselWidth = carousel.scrollWidth;
-                
-                if (Math.abs(currentTransform) >= carouselWidth / 2) {
-                    currentTransform = 0;
-                }
-                
-                carousel.style.transform = `translateX(${currentTransform}px)`;
-            }
-            
-            animationId = requestAnimationFrame(animate);
-        }
-        
-        animate();
+    function loopBounds() {
+      const half = carousel.scrollWidth / 2;
+      if (half > 0) {
+        if (offset <= -half) offset += half;
+        if (offset > 0) offset -= half;
+      }
     }
 
-    function pauseAutoScroll() {
-        isAutoScrollPaused = true;
+    function animate() {
+      if (!paused && !dragging) {
+        offset -= speed;
+        loopBounds();
+        carousel.style.transform = 'translateX(' + offset + 'px)';
+      }
+      frameId = requestAnimationFrame(animate);
     }
 
-    function resumeAutoScroll() {
-        isAutoScrollPaused = false;
-    }
+    container.addEventListener('mouseenter', () => { paused = true; });
+    container.addEventListener('mouseleave', () => { if (!dragging) paused = false; });
 
-    container.addEventListener('mouseenter', () => {
-        isHovered = true;
-        container.style.cursor = 'grab';
-    });
-    
-    container.addEventListener('mouseleave', () => {
-        if (!isDragging) {
-            isHovered = false;
-            container.style.cursor = 'grab';
-        }
+    container.addEventListener('mousedown', e => {
+      dragging = true;
+      startX = e.pageX;
+      startOffset = offset;
+      e.preventDefault();
     });
 
-    container.addEventListener('mousedown', handleDragStart);
-    document.addEventListener('mousemove', handleDragMove);
-    document.addEventListener('mouseup', handleDragEnd);
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      offset = startOffset + (e.pageX - startX);
+      loopBounds();
+      carousel.style.transform = 'translateX(' + offset + 'px)';
+    });
 
-    function handleDragStart(e) {
-        isDragging = true;
-        pauseAutoScroll();
-        
-        startX = e.pageX - container.offsetLeft;
-        scrollLeft = currentTransform;
-        
-        container.style.cursor = 'grabbing';
-        carousel.style.transition = 'none';
-        
-        e.preventDefault();
-    }
+    document.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      paused = false;
+    });
 
-    function handleDragMove(e) {
-        if (!isDragging) return;
-        
-        e.preventDefault();
-        const x = e.pageX - container.offsetLeft;
-        const walk = (x - startX) * 1.5;
-        
-        currentTransform = scrollLeft + walk;
-        
-        const maxScroll = -(carousel.scrollWidth - container.clientWidth);
-        currentTransform = Math.max(maxScroll, Math.min(0, currentTransform));
-        
-        carousel.style.transform = `translateX(${currentTransform}px)`;
-    }
-
-    function handleDragEnd() {
-        if (!isDragging) return;
-        
-        isDragging = false;
-        isHovered = false;
-        
-        container.style.cursor = 'grab';
-        carousel.style.transition = 'transform 0.3s ease';
-        
-        setTimeout(() => {
-            resumeAutoScroll();
-        }, 2000);
-    }
-
-    // Touch support
     let touchStartX = 0;
     let touchStartY = 0;
-    let touchScrollLeft = 0;
-    let isTouching = false;
-    let isVerticalScroll = false;
+    let verticalScroll = false;
 
-    container.addEventListener('touchstart', handleTouchStart, { passive: false });
-    container.addEventListener('touchmove', handleTouchMove, { passive: false });
-    container.addEventListener('touchend', handleTouchEnd);
+    container.addEventListener('touchstart', e => {
+      dragging = true;
+      verticalScroll = false;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      startOffset = offset;
+    }, { passive: true });
 
-    function handleTouchStart(e) {
-        isTouching = true;
-        isVerticalScroll = false;
-        pauseAutoScroll();
-        
-        const touch = e.touches[0];
-        touchStartX = touch.clientX;
-        touchStartY = touch.clientY;
-        touchScrollLeft = currentTransform;
-        
-        carousel.style.transition = 'none';
-    }
+    container.addEventListener('touchmove', e => {
+      if (!dragging) return;
+      const deltaX = e.touches[0].clientX - touchStartX;
+      const deltaY = e.touches[0].clientY - touchStartY;
 
-    function handleTouchMove(e) {
-        if (!isTouching) return;
-        
-        const touch = e.touches[0];
-        const deltaX = touch.clientX - touchStartX;
-        const deltaY = touch.clientY - touchStartY;
-        
-        if (!isVerticalScroll) {
-            if (Math.abs(deltaY) > Math.abs(deltaX)) {
-                isVerticalScroll = true;
-                return;
-            } else if (Math.abs(deltaX) > 10) {
-                e.preventDefault();
-            }
-        }
-        
-        if (isVerticalScroll) return;
-        
-        const walk = deltaX * 1.2;
-        currentTransform = touchScrollLeft + walk;
-        
-        const maxScroll = -(carousel.scrollWidth - container.clientWidth);
-        currentTransform = Math.max(maxScroll, Math.min(0, currentTransform));
-        
-        carousel.style.transform = `translateX(${currentTransform}px)`;
-    }
-
-    function handleTouchEnd() {
-        if (!isTouching) return;
-        
-        isTouching = false;
-        isVerticalScroll = false;
-        
-        carousel.style.transition = 'transform 0.3s ease';
-        
-        setTimeout(() => {
-            resumeAutoScroll();
-        }, 3000);
-    }
-
-    // Wheel scroll support
-    container.addEventListener('wheel', handleWheelScroll, { passive: false });
-
-    function handleWheelScroll(e) {
-        if (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-            e.preventDefault();
-            
-            pauseAutoScroll();
-            
-            const delta = e.deltaY || e.deltaX;
-            currentTransform -= delta * 0.5;
-            
-            const maxScroll = -(carousel.scrollWidth - container.clientWidth);
-            currentTransform = Math.max(maxScroll, Math.min(0, currentTransform));
-            
-            carousel.style.transition = 'transform 0.3s ease';
-            carousel.style.transform = `translateX(${currentTransform}px)`;
-            
-            setTimeout(() => {
-                resumeAutoScroll();
-            }, 1500);
-        }
-    }
-
-    function adjustCarouselSpeed() {
-        const screenWidth = window.innerWidth;
-        
-        if (screenWidth < 768) {
-            autoScrollSpeed = 0.7;
-        } else if (screenWidth < 1024) {
-            autoScrollSpeed = 0.8;
-        } else {
-            autoScrollSpeed = 1;
-        }
-    }
-
-    const debouncedResize = debounce(() => {
-        adjustCarouselSpeed();
-        
-        const maxScroll = -(carousel.scrollWidth - container.clientWidth);
-        if (currentTransform < maxScroll) {
-            currentTransform = maxScroll;
-            carousel.style.transform = `translateX(${currentTransform}px)`;
-        }
-    }, 250);
-
-    window.addEventListener('resize', debouncedResize);
-
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-    initializeCarousel();
-    adjustCarouselSpeed();
-
-    window.addEventListener('beforeunload', () => {
-        if (animationId) {
-            cancelAnimationFrame(animationId);
-        }
-    });
-
-    console.log('🎉 Carrusel de clientes completamente inicializado');
-}
-
-// ================================
-// WHATSAPP FUNCIONALIDAD
-// ================================
-
-function initializeWhatsApp() {
-    console.log('💬 Inicializando WhatsApp...');
-    
-    const WHATSAPP_NUMBER = '573195499887';
-    const DEFAULT_MESSAGE = 'Hola, me interesa conocer más sobre sus servicios de Community Manager';
-    
-    // Función global para enviar mensajes
-    window.sendWhatsAppMessage = function(messageType = 'consulta-general') {
-        const predefinedMessages = {
-            'plan-basico': 'Hola, me interesa el Plan Básico de Community Manager',
-            'plan-medio': 'Hola, me interesa el Plan Medio de Community Manager',
-            'plan-completo': 'Hola, me interesa el Plan Completo de Community Manager',
-            'plan-tiktok': 'Hola, me interesa el Plan TikTok',
-            'branding': 'Hola, me interesa el servicio de Branding e Identidad Visual',
-            'landing-page': 'Hola, me interesa una Landing Page',
-            'sitio-informativo': 'Hola, me interesa un Sitio Web Informativo',
-            'tienda-online': 'Hola, me interesa una Tienda en Línea',
-            'consulta-web': 'Hola, me gustaría una consulta gratuita sobre desarrollo web',
-            'consulta-general': DEFAULT_MESSAGE
-        };
-        
-        const message = predefinedMessages[messageType] || DEFAULT_MESSAGE;
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-        
-        window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
-        console.log('📱 Mensaje enviado a WhatsApp:', messageType);
-    };
-    
-    // Función directa para botón flotante
-    window.sendWhatsAppDirect = function() {
-        sendWhatsAppMessage('consulta-general');
-    };
-    
-    // Manejo del scroll para mostrar/ocultar WhatsApp flotante
-    const whatsappFloat = document.getElementById('whatsappFloat');
-    if (whatsappFloat) {
-        window.addEventListener('scroll', function() {
-            const scrollY = window.pageYOffset;
-            if (scrollY > 300) {
-                whatsappFloat.style.opacity = '1';
-                whatsappFloat.style.visibility = 'visible';
-            } else {
-                whatsappFloat.style.opacity = '0';
-                whatsappFloat.style.visibility = 'hidden';
-            }
-        });
-        
-        // Estado inicial
-        whatsappFloat.style.opacity = '0';
-        whatsappFloat.style.visibility = 'hidden';
-    }
-    
-    console.log('✅ WhatsApp inicializado');
-}
-
-// ================================
-// SMOOTH SCROLLING
-// ================================
-
-function initializeSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-    
-    console.log('✅ Smooth scrolling inicializado');
-}
-
-// ================================
-// FUNCIONES DE DEBUG Y UTILIDADES
-// ================================
-
-window.debugPortfolio = function() {
-    console.log('=== DEBUG PORTFOLIO ===');
-    console.log('📱 Ancho de ventana:', window.innerWidth);
-    console.log('📱 Alto de ventana:', window.innerHeight);
-    
-    const keyElements = {
-        'filtros': document.querySelectorAll('.filter-btn').length,
-        'proyectos': document.querySelectorAll('.portfolio-item').length,
-        'nav-links': document.querySelector('.nav-links'),
-        'whatsapp-float': document.querySelector('#whatsappFloat'),
-        'clients-carousel': document.querySelector('.clients-carousel')
-    };
-    
-    Object.entries(keyElements).forEach(([name, element]) => {
-        const exists = typeof element === 'number' ? element > 0 : !!element;
-        console.log(`${exists ? '✅' : '❌'} ${name}:`, typeof element === 'number' ? element : !!element);
-    });
-    
-    if (window.portfolioFilters) {
-        console.log('📊 Estadísticas de filtros:', window.portfolioFilters.getSectorStats());
-    }
-    
-    console.log('=== FIN DEBUG ===');
-};
-
-// ================================
-// FUNCIONES GLOBALES ADICIONALES
-// ================================
-
-// Manejar video de fondo (para el HTML)
-window.handleVideoLoad = function() {
-    document.querySelector('.hero')?.classList.add('video-loaded');
-};
-
-window.handleVideoError = function() {
-    document.querySelector('.hero-fallback')?.style.setProperty('display', 'block');
-};
-
-// ================================
-// SCROLL TO TOP FUNCTIONALITY
-// ================================
-
-function initializeScrollToTop() {
-    console.log('🚀 Inicializando Scroll to Top...');
-    
-    const scrollToTopBtn = document.getElementById('scrollToTop');
-    
-    if (!scrollToTopBtn) {
-        console.warn('⚠️ Botón scroll-to-top no encontrado');
+      if (!verticalScroll && Math.abs(deltaY) > Math.abs(deltaX)) {
+        verticalScroll = true;
         return;
-    }
-    
-    let isVisible = false;
-    let ticking = false;
-    
-    // Configuración
-    const config = {
-        showAfter: 300,        // Mostrar después de 300px de scroll
-        smoothScroll: true,    // Usar scroll suave
-        animateEntry: true     // Animar entrada del botón
-    };
-    
-    // Función principal de scroll
-    function handleScroll() {
-        const scrollY = window.pageYOffset;
-        const shouldShow = scrollY > config.showAfter;
-        
-        if (shouldShow && !isVisible) {
-            showButton();
-        } else if (!shouldShow && isVisible) {
-            hideButton();
-        }
-        
-        ticking = false;
-    }
-    
-    function requestTick() {
-        if (!ticking) {
-            requestAnimationFrame(handleScroll);
-            ticking = true;
-        }
-    }
-    
-    // Funciones de visibilidad
-    function showButton() {
-        isVisible = true;
-        scrollToTopBtn.classList.add('visible');
-        
-        if (config.animateEntry) {
-            scrollToTopBtn.classList.add('animate-in');
-            setTimeout(() => {
-                scrollToTopBtn.classList.remove('animate-in');
-            }, 600);
-        }
-        
-        console.log('👆 Botón scroll-to-top mostrado');
-    }
-    
-    function hideButton() {
-        isVisible = false;
-        scrollToTopBtn.classList.remove('visible');
-        console.log('👇 Botón scroll-to-top ocultado');
-    }
-    
-    // Función de scroll to top
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-        
-        console.log('🔝 Scrolling to top');
-        
-        // Analytics opcional
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'scroll_to_top', {
-                event_category: 'Navigation',
-                event_label: 'Scroll to Top Button'
-            });
-        }
-    }
-    
-    // Event listeners
-    scrollToTopBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        scrollToTop();
-        
-        // Efecto visual de click
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            this.style.transform = '';
-        }, 150);
+      }
+      if (verticalScroll) return;
+
+      if (Math.abs(deltaX) > 10) e.preventDefault();
+      offset = startOffset + deltaX;
+      loopBounds();
+      carousel.style.transform = 'translateX(' + offset + 'px)';
+    }, { passive: false });
+
+    container.addEventListener('touchend', () => {
+      dragging = false;
+      setTimeout(() => { paused = false; }, 1500);
     });
-    
-    window.addEventListener('scroll', requestTick, { passive: true });
-    
-    // Estado inicial
-    scrollToTopBtn.style.cssText += `
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(20px) scale(0.8);
-    `;
-    
-    // Check inicial
-    setTimeout(requestTick, 100);
-    
-    // API pública
-    window.scrollToTopAPI = {
-        show: showButton,
-        hide: hideButton,
-        scrollToTop: scrollToTop,
-        isVisible: () => isVisible
+
+    window.addEventListener('resize', debounce(adjustSpeed, 200));
+    document.addEventListener('visibilitychange', () => { paused = document.hidden; });
+
+    adjustSpeed();
+    if (!prefersReducedMotion) animate();
+
+    window.addEventListener('pagehide', () => { if (frameId) cancelAnimationFrame(frameId); });
+  }
+
+  /* ================================
+     SCROLL SUAVE CON OFFSET DEL HEADER
+     ================================ */
+  function initSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const id = this.getAttribute('href');
+        if (!id || id === '#') return;
+        const target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+        history.replaceState(null, '', id);
+      });
+    });
+  }
+
+  /* ================================
+     FORMULARIO DE CONTACTO
+     ================================ */
+  function initContactForm() {
+    const form = document.getElementById('contactForm');
+    if (!form) return;
+
+    const button = form.querySelector('.submit-btn');
+    const status = document.createElement('p');
+    status.className = 'form-status';
+    status.setAttribute('role', 'status');
+    form.appendChild(status);
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      status.textContent = '';
+      button.disabled = true;
+      button.textContent = 'Enviando';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' }
+        });
+
+        if (!response.ok) throw new Error('Respuesta no válida');
+
+        form.reset();
+        status.textContent = 'Recibimos tu mensaje. Te respondemos en menos de 48 horas.';
+      } catch (error) {
+        status.textContent = 'No se pudo enviar. Escríbenos por WhatsApp mientras revisamos el formulario.';
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Enviar consulta';
+      }
+    });
+  }
+
+  /* ================================
+     UTILIDADES
+     ================================ */
+  function initFooterYear() {
+    const year = document.getElementById('year');
+    if (year) year.textContent = new Date().getFullYear();
+  }
+
+  function debounce(fn, wait) {
+    let timeout;
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn.apply(this, args), wait);
     };
-    
-    console.log('✅ Scroll to Top inicializado');
-}
-
-// ================================
-// LOGS FINALES
-// ================================
-
-console.log('✅ Script principal cargado');
-console.log('🎮 Funciones disponibles:');
-console.log('  • portfolioFilters.showJuridico() - Filtrar jurídico');
-console.log('  • portfolioFilters.showBelleza() - Filtrar belleza');
-console.log('  • portfolioFilters.showRestaurantes() - Filtrar restaurantes');
-console.log('  • portfolioFilters.showSalud() - Filtrar salud');
-console.log('  • portfolioFilters.showInmobiliario() - Filtrar inmobiliario');
-console.log('  • portfolioFilters.showAllSectors() - Mostrar todos temporalmente');
-console.log('  • reelsManager.pauseAll() - Pausar todos los reels');
-console.log('  • reelsManager.playById(id) - Reproducir reel específico');
-console.log('  • sendWhatsAppMessage(tipo) - Enviar WhatsApp');
-console.log('  • debugPortfolio() - Debug general');
+  }
+})();
