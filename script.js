@@ -11,6 +11,11 @@
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const canReveal = !prefersReducedMotion && 'IntersectionObserver' in window;
 
+  // Reproducción automática de reels: se desactiva si el usuario pidió menos
+  // movimiento o si tiene el ahorro de datos encendido en el navegador.
+  const saveData = !!(navigator.connection && navigator.connection.saveData);
+  const autoplayEnabled = !prefersReducedMotion && !saveData && 'IntersectionObserver' in window;
+
   // Se marca aquí y no en init para que no haya parpadeo antes del primer pintado
   if (canReveal) document.documentElement.classList.add('js-reveal');
 
@@ -250,26 +255,38 @@
       containers.forEach(c => { if (c !== except) pauseReel(c); });
     }
 
-    async function playReel(container) {
+    async function playReel(container, opts) {
+      const options = opts || {};
       const video = container.querySelector('.reel-video');
       if (!video) return;
 
       pauseAll(container);
       container.classList.add('loading');
 
-      try {
-        video.muted = false;
-        await video.play();
-      } catch (error) {
-        // El navegador bloquea el audio automático: reproducimos silenciado
+      if (options.silent) {
+        // Reproducción automática: siempre silenciada, sin aviso
         video.muted = true;
         try {
           await video.play();
-          showMutedNotice(container);
-        } catch (fallbackError) {
+        } catch (error) {
           container.classList.remove('loading');
-          setIcon(container.querySelector('.reel-play-button .icon'), '#i-alert');
           return;
+        }
+      } else {
+        try {
+          video.muted = false;
+          await video.play();
+        } catch (error) {
+          // El navegador bloquea el audio automático: reproducimos silenciado
+          video.muted = true;
+          try {
+            await video.play();
+            showMutedNotice(container);
+          } catch (fallbackError) {
+            container.classList.remove('loading');
+            setIcon(container.querySelector('.reel-play-button .icon'), '#i-alert');
+            return;
+          }
         }
       }
 
@@ -296,7 +313,15 @@
       const volumeBtn = container.querySelector('.volume-btn');
       if (!video) return;
 
-      const toggle = () => { video.paused ? playReel(container) : pauseReel(container); };
+      const toggle = () => {
+        if (video.paused) {
+          container.dataset.manual = 'true'; // el usuario manda: el automático no lo toca
+          playReel(container);
+        } else {
+          delete container.dataset.manual;
+          pauseReel(container);
+        }
+      };
 
       if (overlay) {
         overlay.setAttribute('role', 'button');
@@ -345,14 +370,45 @@
       if (document.hidden) pauseAll(null);
     });
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const video = entry.target.querySelector('.reel-video');
-        if (!entry.isIntersecting && video && !video.paused) pauseReel(entry.target);
-      });
-    }, { threshold: 0.3 });
+    /* Reproducción automática: solo el reel más centrado en pantalla,
+       siempre silenciado y uno a la vez. */
+    const ratios = new Map();
+    let autoActive = null;
 
-    containers.forEach(c => observer.observe(c));
+    function updateAutoplay() {
+      let best = null;
+      let bestRatio = 0;
+
+      ratios.forEach((ratio, container) => {
+        if (ratio > bestRatio) { bestRatio = ratio; best = container; }
+      });
+
+      // Si el usuario reprodujo uno a mano, se respeta mientras siga a la vista
+      if (autoActive && autoActive.dataset.manual && (ratios.get(autoActive) || 0) > 0.2) return;
+
+      const candidate = bestRatio >= 0.6 ? best : null;
+      if (candidate === autoActive) return;
+
+      if (autoActive && !autoActive.dataset.manual) pauseReel(autoActive);
+      autoActive = candidate;
+      if (autoActive && autoActive.querySelector('.reel-video').paused) {
+        playReel(autoActive, { silent: true });
+      }
+    }
+
+    const viewObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        ratios.set(entry.target, entry.intersectionRatio);
+        if (entry.intersectionRatio < 0.2) {
+          delete entry.target.dataset.manual;
+          const video = entry.target.querySelector('.reel-video');
+          if (video && !video.paused) pauseReel(entry.target);
+        }
+      });
+      if (autoplayEnabled) updateAutoplay();
+    }, { threshold: [0, 0.2, 0.4, 0.6, 0.8, 1] });
+
+    containers.forEach(c => viewObserver.observe(c));
   }
 
   /* ================================
