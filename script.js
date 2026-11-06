@@ -1,5 +1,5 @@
 /* ================================================================
-   FELIPE MORA & PAULA SANCHEZ — SCRIPT PRINCIPAL
+   EQUIPO DE COMUNICACIÓN ESTRATÉGICA — SCRIPT PRINCIPAL
    Sin emojis: los estados de los reels usan iconos SVG del sprite.
    ================================================================ */
 
@@ -41,7 +41,7 @@
     if (!canReveal) return;
 
     const SELECTORS = [
-      '.sec-head', '.case-study', '.included-band', '.service-card', '.faq',
+      '.sec-head', '.stats-head', '.case-study', '.how-card', '.success-card', '.start-card', '.svc-card', '.service-card', '.faq',
       '.package-card', '.additional-service-card', '.sector-title',
       '.portfolio-card', '.reel-portfolio-card', '.cta-band',
       '.web-option-card', '.web-dev-cta', '.tl-step', '.team-card',
@@ -104,6 +104,7 @@
     'sitio-informativo': 'Hola, me interesa un sitio web informativo.',
     'tienda-online': 'Hola, me interesa una tienda en línea.',
     'consulta-web': 'Hola, me gustaría una consulta gratuita sobre desarrollo web.',
+    'agendar-reunion': 'Hola, me gustaría agendar una reunión para conocer los planes.',
     'consulta-general': 'Hola, me interesa conocer más sobre sus servicios de community management.'
   };
 
@@ -163,7 +164,10 @@
       let visible = 0;
 
       sectorSections.forEach(section => {
-        section.classList.toggle('hidden', sectorOf(section) !== sector);
+        const key = section.getAttribute('data-sector') || sectorOf(section);
+        const hasItems = !!section.querySelector('.portfolio-item');
+        // Se ocultan las secciones vacías: en ese caso se muestra el aviso de "no-results"
+        section.classList.toggle('hidden', key !== sector || !hasItems);
       });
 
       portfolioItems.forEach(item => {
